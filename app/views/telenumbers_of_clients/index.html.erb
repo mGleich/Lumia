@@ -1,0 +1,23 @@
+<h1>Listing telenumbers_of_clients</h1>
+
+<table>
+  <tr>
+    <th>Number</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @telenumbers_of_clients.each do |telenumbers_of_client| %>
+  <tr>
+    <td><%= telenumbers_of_client.number %></td>
+    <td><%= link_to 'Show', telenumbers_of_client %></td>
+    <td><%= link_to 'Edit', edit_telenumbers_of_client_path(telenumbers_of_client) %></td>
+    <td><%= link_to 'Destroy', telenumbers_of_client, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Telenumbers of client', new_telenumbers_of_client_path %>

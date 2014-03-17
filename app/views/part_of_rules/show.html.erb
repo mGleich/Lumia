@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Boperator:</b>
+  <%= @part_of_rule.boperator %>
+</p>
+
+<p>
+  <b>Test value:</b>
+  <%= @part_of_rule.test_value %>
+</p>
+<% if @part_of_rule.event_types.size > 0 %>
+<table>
+  <tr>
+    <th>Description</th>
+    <th>Short decription</th>
+    <th>Number</th>
+    <th></th>
+  </tr>
+
+  <% @part_of_rule.event_types.each do |event_type| %>
+      <tr>
+        <td><%= event_type.description %></td>
+        <td><%= event_type.short_description %></td>
+        <td><%= event_type.number %></td>
+         </tr>
+  <% end %>
+</table>
+<% end %>
+<%= link_to 'Edit', edit_part_of_rule_path(@part_of_rule) %> |
+<%= link_to 'Back', part_of_rules_path %>

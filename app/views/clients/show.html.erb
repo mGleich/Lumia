@@ -1,0 +1,89 @@
+<p id="notice"><%= notice %></p>
+
+<% @back = link_to 'Zurück', clients_path %>
+
+<h1>Klientendaten</h1>
+
+<table width="500">
+  <col width="250">
+  <col width="250">
+  <tr>
+    <td>
+      <b>Name:</b>
+      <%= @client.name %></td>
+    <td style="margin-left: 200px;">
+      <b>Geburtstag:</b>
+      <%= @client.birthday %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Vorname:</b>
+      <%= @client.first_name %></td>
+    <td><b>Migrationshintergrund:</b>
+      <%= @client.migration %> </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Geschlecht:</b>
+      <%= @client.sex %>
+    </td>
+    <td><b>Bedarfgemeinschaft:</b>
+      <%= @client.community_needs %></td>
+  </tr>
+  <tr>
+    <td><b>Status:</b>
+      <% if @client.state != nil %>
+          <%= @client.state.condition %>
+      <% end %> </td>
+    <td></td>
+  </tr>
+</table>
+
+<% if @client.adresses.size != 0 %>
+    <div style="margin-top: 25px;">
+    <b style="font-size: 125%">Adressen:</b>
+    <div style="height:150px; width:500px; overflow:auto;">
+      <table width="500px" border="1">
+        <tr>
+          <th>Straße</th>
+          <th>Nr</th>
+          <th>Plz</th>
+          <th>Ort</th>
+          <th>Kommentar</th>
+        </tr>
+        <% @client.adresses.each do |adress| %>
+            <tr>
+              <td><%= adress.street %></td>
+              <td><%= adress.house_number %></td>
+              <td><%= adress.zipcode %></td>
+              <td><%= adress.city %></td>
+              <td><%= adress.comment %></td>
+            </tr>
+        <% end %>
+      </table>
+    </div>
+    </div>
+<% end %>
+
+<table width="500px">
+  <col width="250">
+  <col width="250">
+  <tr>
+    <td>
+      <b>Telefonnummern:</b> <br/>
+      <%= select_tag :telefonnummern, options_for_select(
+                             @client.telenumbers_of_clients.collect { |l| [l.number, l.number] }), {"size" => 5} %>
+    </td>
+    <td>
+      <b>Email Adressen:</b>  <br/>
+
+      <%= select_tag :emails, options_for_select(
+                             @client.emails_of_clients.collect { |l| [l.email, l.email] }), {"size" => 5} %>
+    </td>
+  </tr>
+</table>
+<p>
+  <b>Bemerkung:</b>
+  <%= @client.comment %>
+</p>

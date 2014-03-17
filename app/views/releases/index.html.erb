@@ -1,0 +1,24 @@
+<h1>Auslöser Liste</h1>
+
+<table>
+  <tr>
+    <th>Name:</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @releases.each do |release| %>
+  <tr>
+    <td><%=release.name%></td>
+    <td><%= link_to 'Anzeigen', release %></td>
+    <td><%= link_to 'Bearbeiten', edit_release_path(release) %></td>
+    <td><%= link_to 'Löschen', release, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= will_paginate @releases %>
+<div style="margin-top: 25px;">
+<%= link_to 'Auslöser anlegen', new_release_path %>
+</div>

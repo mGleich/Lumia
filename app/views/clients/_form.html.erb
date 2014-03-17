@@ -1,0 +1,410 @@
+<%= form_for(@client, html: {id: "new_client", name: "new_client"}) do |f| %>
+
+    <% if @client.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@client.errors.count, "error") %> prohibited this client from being saved:</h2>
+
+          <ul>
+            <% @client.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <table style="border-width: 1px;
+            border-style: solid;
+            border-color: #000000 " width="700">
+      <col width="400">
+      <col width="300">
+      <tr>
+        <td><b>Name:</b>
+          <%= f.text_field :name %></td>
+        <td><b>Migrationshintergrund:</b>
+          <%= f.select :migration, ["ja", "nein", "unbekannt"], :prompt => "Bitte wählen" %>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Vorname:</b>
+          <%= f.text_field :first_name %></td>
+        <td><b>Bedarfgemeinschaft:</b>
+          <%= f.select :community_needs, ["ja", "nein", "unbekannt"], :prompt => "Bitte wählen" %>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Geschlecht:</b>
+          <%= f.select :sex, ["männlich", "weiblich", "intersexuell"], :prompt => "Bitte wählen" %>
+        </td>
+        <td><b>Gemeldet von:</b>
+          <%= f.select :reported_by_id, ContactPartner.all.collect { |p| [p.name,
+                                                                          p.id] }, {include_blank: true} %>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Geburtstag:</b>
+          <input id="birthday" name="client[birthday]" placeholder="tt-mm-jjjj" type="text"/></td>
+        <td><b>AP im Jobcenter:</b>
+          <%= f.select :cp_in_jobcenter_id, ContactPartner.all.collect { |p| [
+                  p.name, p.id] }, {include_blank: true} %>
+        </td>
+      </tr>
+      <tr>
+        <td><b>E-Mail:</b>
+          <input id="email" name="email" placeholder="mustermann@anbieter.de" type="text"/>
+          <span id="add_email" onclick="addIndex(1)">Hinzufügen</span>
+        </td>
+        <td><b>Weiterer AP:</b>
+          <%= f.select :another_cp_id, ContactPartner.all.collect { |p| [p.name,
+                                                                         p.id] }, {include_blank: true} %>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Telefon:</b>
+          <input id="phone" name="phone" placeholder="12341234567" type="text"/>
+
+          <span id="add_phone" onclick="addIndex(2)">Hinzufügen</span></td>
+        <td><b>Bemerkung:</b>
+          <%= f.text_field :comment %></td>
+      </tr>
+    </table>
+
+    <table style="border-width: 1px;
+            border-style: solid;
+            border-color: #000000; margin-top: 5px;" width="700">
+      <col width="400">
+      <col width="300">
+      <tr>
+        <td>
+          <b>Straße:</b>
+          <input id="street" name="street" type="text"/>
+        </td>
+        <td>
+          <b>Nr:</b>
+          <input id="house_number" name="house_number" type="text"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>PLZ:</b>
+          <input id="zipcode" name="zipcode" type="text"/>
+        </td>
+        <td>
+          <b>Ort:</b>
+          <input id="city" name="city" type="text"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Kommentar:</b>
+          <input id="comment" name="comment" type="text"/>
+        </td>
+        <td>
+          <p id="add_adress">weitere Adresse Hinzufügen</p>
+        </td>
+      </tr>
+    </table>
+
+    <div>
+      <b style="font-size: 125%">Adressen:</b>
+
+      <div style="height:75px; width:800px; overflow:auto;">
+        <table id="mytable" width="700px" border="1">
+          <tr>
+            <th>Straße:</th>
+            <th>Nr:</th>
+            <th>PLZ:</th>
+            <th>Ort:</th>
+            <th>Kommentar:</th>
+          </tr>
+          <% if @client.adresses.size != 0 %>
+              <% @client.adresses.each do |adress| %>
+                  <tr>
+                    <td><%= adress.house_number %></td>
+                    <td><%= adress.street %></td>
+                    <td><%= adress.zipcode %></td>
+                    <td><%= adress.city %></td>
+                    <td><%= adress.comment %></td>
+                    <td><input type="button" value="Delete" onclick="deleteRow(this)"></td>
+                  </tr>
+              <% end %>
+          <% end %>
+        </table>
+      </div>
+    </div>
+
+    <table width="500">
+      <col width="250">
+      <col width="250">
+      <th><b style="font-size: 100%">EMail Adressen:</b></th>
+      <th><b style="font-size: 100%">Telefonnummern:</b></th>
+      <tr>
+        <td>
+          <%= select_tag "emails_of_client_", options_for_select(
+                  @client.emails_of_clients.collect { |l| [l.email, l.email] }), {"size" => 2, multiple: false} %>
+          <p id="remove_email" onclick="deleteIndex(1)">Email Entfernen</p>
+        </td>
+        <td>
+          <%= select_tag "numbers_of_client_", options_for_select(
+                  @client.telenumbers_of_clients.collect { |l| [l.number, l.number] }), {"size" => 2, multiple: false} %>
+
+          <p id="remove_email" onclick="deleteIndex(2)">Nummer Entfernen</p>
+        </td>
+      </tr>
+    </table>
+
+    <div class="actions">
+      <%= f.submit "Klient speichern" %>
+    </div>
+
+<% end %>
+
+<script>
+    //Helfer Array soll helfen die Selectfelder in der form Funktion auszuwählen
+    var selected_field_names = new Array("emails_of_client", "numbers_of_client");
+
+    //Array was die Adressen enthält, Hat Klient keine Adresse wird auch keine dem Array hinzugefügt
+    <% if @client.adresses.size != 0 %>
+    var adresses_arr = [
+        <% @client.adresses.each do |adress| %>
+        {comment: "<%= adress.comment %>",
+            street: "<%= adress.street %>",
+            house_number: "<%= adress.house_number %>",
+            zipcode: "<%= adress.zipcode %>",
+            city: "<%= adress.city %>"}
+        <% if adress != @client.adresses.last %>
+        ,
+        <% end %>
+        <% end %>
+    ];
+    <% else %>
+    var adresses_arr = [];
+    <% end %>
+
+    //Muster für Zipcode RegExp
+    var patt1 = /^[0-9]{5,5}$/i;
+
+    $(document).ready(function () {
+        <% form = "#new_client" %>
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+
+            <%-# abfangen eines Fehlers um ein unnötiges Senden zu vermeiden -%>
+            var first_name = document.getElementById("client_first_name");
+            if (first_name.value == "") {
+                alert("Es dürfen keine Klienten ohne Vornamen erstellt werden")
+                return false;
+            }
+            var name = document.getElementById("client_name");
+            if (first_name.value == "") {
+                alert("Es dürfen keine Klienten ohne Namen erstellt werden")
+                return false;
+            }
+
+            // Zusätzliche Funktionen die den Komfort der Seite erleichtern sollen.
+            // Wird nur eine Email oder Nummer eingegeben muss kein Button hinzugefügt werden.
+            if ($("#street").val() != "" && $("#house_number").val() != "" && $("#zipcode").val() != "" &&
+                    patt1.test($("#zipcode").val()) == true && $("#city").val() != "") {
+
+                var obj = {
+                    comment: $("#comment").val(),
+                    street: $("#street").val(),
+                    house_number: $("#house_number").val(),
+                    zipcode: $("#zipcode").val(),
+                    city: $("#city").val()
+                }
+
+                adresses_arr.push(obj);
+            }
+
+            var pattemail = /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,}$/i;
+            var selectemail = document.getElementById("emails_of_client_");
+            var selected_valemail = document.getElementById("email");
+
+            var pattphone = /^[0-9]{8,}$/i; //min 8 Zeichen
+            var selectphone = document.getElementById("numbers_of_client_");
+            var selected_valphone = document.getElementById("phone");
+
+            if (selected_valemail.value != "") {
+                var test = 0;
+                for (var i = 0; i < selectemail.length; i++) {
+                    <%-# Überprüfung ob der Wert bereits im Select vorhanden ist. -%>
+                    if (selectemail[i].value == selected_valemail.value) {
+                        test = 1;
+                    }
+                }
+                if (pattemail.test(selected_valemail.value) == true && test == 0) {
+                    $(selectemail).append($('<option>', {
+                        value: selected_valemail.value,
+                        text: selected_valemail.value
+                    }));
+                }
+            }
+
+            if (selected_valphone.value != "") {
+                var test = 0;
+                for (var i = 0; i < selectphone.length; i++) {
+                    <%-# Überprüfung ob der Wert bereits im Select vorhanden ist. -%>
+                    if (selectphone[i].value == selected_valphone.value) {
+                        test = 1;
+                    }
+                }
+                //wenn nicht füge eintrag hinzu
+                if (pattphone.test(selected_valphone.value) == true && test == 0) {
+                    $(selectphone).append($('<option>', {
+                        value: selected_valphone.value,
+                        text: selected_valphone.value
+                    }));
+                }
+            }
+
+            //fugt dem Gesendeten Packet die Adressen hinzu
+            for (var i = 0; i < adresses_arr.length; i++) {
+                    $form.append($('<input>', {
+                        type: "hidden", name: "adress" + i + "[comment]", value: adresses_arr[i].comment
+                    }));
+                    $form.append($('<input>', {
+                        type: "hidden", name: "adress" + i + "[street]", value: adresses_arr[i].street
+                    }));
+                    $form.append($('<input>', {
+                        type: "hidden", name: "adress" + i + "[house_number]", value: adresses_arr[i].house_number
+                    }));
+                    $form.append($('<input>', {
+                        type: "hidden", name: "adress" + i + "[zipcode]", value: adresses_arr[i].zipcode
+                    }));
+                    $form.append($('<input>', {
+                        type: "hidden", name: "adress" + i + "[city]", value: adresses_arr[i].city
+                    }));
+            }
+
+            for (var i = 0; i < selected_field_names.length; i++) {
+                <%-# hier werden alle Inhalte der Selectfelder hinzugefügt -%>
+                var select = document.getElementById(selected_field_names[i]+"_");
+                if (select != null) {
+                    for (var j = 0; j < select.length; j++) {
+                        $form.append($('<input>', {
+                            type: "hidden", name: selected_field_names[i] + "[]", value: select.options[j].value
+                        }));
+                    }
+                }
+            }
+        })
+
+        // Funktion dient dem Hinzufügen von Zeilen in die Tabelle
+        $("#add_adress").click(function () {
+            //Überprüfung ob auch alle Felder einen Eintrag haben
+            if ($("#street").val() != "" && $("#house_number").val() != "" && $("#zipcode").val() != "" &&
+                    patt1.test($("#zipcode").val()) == true && $("#city").val() != "") {
+
+                var tbody = document.getElementById("mytable").getElementsByTagName('tbody')[0];
+                //Hinzufügen der Elemente in die Tabelle
+                var row = document.createElement("tr");
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode($("#street").val()))
+                row.appendChild(td);
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode($("#house_number").val()))
+                row.appendChild(td);
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode($("#zipcode").val()))
+                row.appendChild(td);
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode($("#city").val()))
+                row.appendChild(td);
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode($("#comment").val()))
+                row.appendChild(td);
+                var td = document.createElement("td");
+                var button = document.createElement("input");
+                button.setAttribute("type", "button");
+                button.setAttribute("value", "Delete");
+                button.setAttribute("onclick", "deleteRow(this)");
+                td.appendChild(button);
+                row.appendChild(td);
+                tbody.appendChild(row);
+
+                //Die Adresse wird in ein Array hinzugefügt
+                var obj = {
+                    comment: $("#comment").val(),
+                    street: $("#street").val(),
+                    house_number: $("#house_number").val(),
+                    zipcode: $("#zipcode").val(),
+                    city: $("#city").val()
+                }
+
+                adresses_arr.push(obj);
+                //Textfelder werden gelöscht
+                $("#comment").val("")
+                $("#street").val("")
+                $("#house_number").val("")
+                $("#zipcode").val("")
+                $("#city").val("")
+            }
+            else {
+                alert("Einer der Werte entspricht nicht den Konventionen")
+            }
+        });
+
+        //Eintrag für Datepicker
+        $("#client_birthday").datepicker({ dateFormat: "dd-mm-yy" });
+        $( "#client_birthday" ).datepicker( "option", "dayNamesMin", [ "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" ] );
+        $( "#client_birthday" ).datepicker( "option", "monthNames", [ "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "December" ] );
+    });
+
+
+    //Funktion dient dem Hinzufügen der Emails und Telefonnummern in das jeweilige Select Feld
+    //Wird eine 1 gesendet handelt es sich um eine Email
+    //Wird nichts gesendet handelt es sich um eine Telefonnummer
+    function addIndex(number) {
+        if (number == 1) {
+            // Muster eines Regulären Ausdrucks
+            var patt1 = /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,}$/i;
+            var select = document.getElementById("emails_of_client_");
+            var selected_val = document.getElementById("email");
+        }
+        else {
+            var patt1 = /^[0-9]{8,}$/i;
+            var select = document.getElementById("numbers_of_client_");
+            var selected_val = document.getElementById("phone");
+        }
+        //Vergleich ob das feld auch einen Inhalt hat
+        if (selected_val.value != "") {
+            for (var i = 0; i < select.length; i++) {
+                <%-# Überprüfung ob der Wert bereits im Select vorhanden ist. -%>
+                if (select[i].value == selected_val.value) {
+                    alert("Der Eintrag ist bereits vorhanden");
+                    return false;
+                }
+            }
+            //Man könnte eine Einsparung treffen würde aber keine Eindeutige Fehlermeldung geben
+            if (patt1.test(selected_val.value) == true) {
+                $(select).append($('<option>', {
+                    value: selected_val.value,
+                    text: selected_val.value
+                }));
+                selected_val.value = "";
+            }
+            else {
+                alert("Eintrag entspricht nicht den Konventionen")
+            }
+        }
+    }
+    // Funktion dient dem entfernen von einträgen in der Email oder Telefonnummer Feld
+    function deleteIndex(number) {
+        if (number == 1) {
+            var select = document.getElementById("emails_of_client_");
+        }
+        else {
+            var select = document.getElementById("numbers_of_client_");
+        }
+        select.remove(select.selectedIndex);
+    }
+    // Löscht Zeile aus der Tabelle für Adressen
+    function deleteRow(r) {
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById('mytable').deleteRow(i);
+        i = i - 1;
+        //löscht Feld aus Array
+        adresses_arr.splice(i, 1);
+    }
+</script>

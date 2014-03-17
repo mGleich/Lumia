@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  boperator: MyString
+  test_value: 1
+
+two:
+  boperator: MyString
+  test_value: 1

@@ -1,0 +1,24 @@
+<h1>Ergebnis Liste</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @results.each do |result| %>
+  <tr>
+    <td><%= result.name %></td>
+    <td><%= link_to 'Anzeigen', result %></td>
+    <td><%= link_to 'Bearbeiten', edit_result_path(result) %></td>
+    <td><%= link_to 'Löschen', result, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @results %>
+<div style="margin-top: 25px;">
+<%= link_to 'Ergebnis anlegen', new_result_path %>
+</div>
+

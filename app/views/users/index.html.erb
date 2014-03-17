@@ -1,0 +1,21 @@
+<h1>Benutzer Liste</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= link_to 'Anzeigen', user %></td>
+    <td><%= link_to 'Bearbeiten', edit_user_path(user) %></td>
+    <td><%= link_to 'Entfernen', user, method: :delete, data: { confirm: 'Sind sie sich sicher?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= will_paginate @users %>

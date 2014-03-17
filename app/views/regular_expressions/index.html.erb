@@ -1,0 +1,47 @@
+<h1>Liste Regelausdrücke</h1>
+
+<div style="height:425px; width:700px; overflow:auto;">
+
+
+<% @regular_expressions.each do |regular_expression| %>
+      <table style="border-width: 1px;
+              border-style: solid;
+              border-color: #000000; margin-top: 5px;" width="700">
+      <tr ><td colspan="4"><b>Name:</b>
+        <b><%= regular_expression.name %></b></td></tr>
+  <tr>
+    <td>
+      <p>
+      <b>Auslöser:</b><br />
+      <%= select_tag :releases_selection, options_for_select(
+              regular_expression.releases.collect { |l| [l.name, l.id] }), {"size" => 3} %>
+    </p>
+    </td>
+    <td>
+      <p>
+        <b>Regeln:</b><br />
+        <%= select_tag :releases_selection, options_for_select(
+                regular_expression.rules.collect { |l| [l.name, l.id] }), {"size" => 3} %>
+      </p>
+    </td>
+    <td>
+      <p>
+        <b>Ergebnisse:</b><br />
+        <%= select_tag :releases_selection, options_for_select(
+                regular_expression.results.collect { |l| [l.name, l.id] }), {"size" => 3} %>
+      </p>
+    </td>
+    <td>
+      <%= link_to 'Bearbeiten', edit_regular_expression_path(regular_expression) %>
+      <%= link_to 'Löschen', regular_expression, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %>
+    </td>
+  </tr>
+      </table>
+<% end %>
+
+  </div>
+<%= will_paginate @event_types %>
+
+<div style="margin-top: 25px;">
+  <%= link_to 'Regulären Ausdruck anlegen', new_regular_expression_path %>
+</div>

@@ -1,0 +1,7 @@
+$("#<%=@event_type.depth_name(@number+1)%>_level").html("<%= escape_javascript(options_for_select(@x_level_selection.collect { |d| [d.short_description, d.id] })) %>");
+$("#<%=@event_type.depth_name(@number+1)%>_level").show()
+<% for i in (@number + 2)..5 %>
+<% @x_level_selection = Array.new %>
+$("#<%=@event_type.depth_name(i)%>_level").html("<%= escape_javascript(options_for_select(@x_level_selection.collect { |d| [d.short_description, d.id] })) %>");
+$("#<%=@event_type.depth_name(i)%>_level").hide()
+<% end %>

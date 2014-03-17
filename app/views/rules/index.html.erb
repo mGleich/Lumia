@@ -1,0 +1,23 @@
+<h1>Regeln</h1>
+<table>
+  <tr>
+    <th>Name:</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @rules.each do |rule| %>
+      <tr>
+        <td><%= rule.name %></td>
+        <td><%= link_to 'Anzeigen', rule %></td>
+        <td><%= link_to 'Bearbeiten', edit_rule_path(rule) %></td>
+        <td><%= link_to 'Löschen', rule, method: :delete, data: {confirm: 'Sind Sie sich sicher?'} %></td>
+      </tr>
+  <% end %>
+</table>
+
+<%= will_paginate @rules %>
+<div style="margin-top: 25px;">
+<%= link_to 'Regel anlegen', new_rule_path %>
+</div>

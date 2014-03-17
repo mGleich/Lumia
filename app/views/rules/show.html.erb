@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+<h1>Regel anzeigen</h1>
+<p>
+  <b>Name:</b>
+  <%= @rule.name %>
+</p>
+
+<% if @rule.type == "RuleWithParts" && @rule.part_of_rules.size > 0 %>
+    <b style="margin-top: 25px;">Teilregeln:</b>
+    <div style="height:250px; width:500px; overflow:auto;">
+      <table width="500px;" border="1">
+        <tr>
+          <th>Test Wert:</th>
+          <th>Operator:</th>
+          <th>Hinzugefügte Ereignistypen:</th>
+        </tr>
+
+        <% @rule.part_of_rules.each do |part_of_rule| %>
+            <tr>
+
+              <td><%= part_of_rule.test_value %></td>
+              <td><%= part_of_rule.boperator %></td>
+              <td><%= select_tag "part_of_rule_[add_event_types][]", options_for_select(
+                      part_of_rule.event_types.collect { |l| [l.short_description, l.id] }), {"size" => 5} %></td>
+            </tr>
+        <% end %>
+      </table>
+    </div>
+
+<% end %>
+
+<% @back = link_to 'Zurück', rules_path %>

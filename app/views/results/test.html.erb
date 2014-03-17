@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lumia</title>
+  <link href="/assets/application.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/adresses.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/clients.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/employees.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/event_types.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/events.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/pages.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/part_of_rules.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/regular_expressions.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/releases.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/results.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/rules.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/scaffolds.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/sessions.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/states.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/statuses.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <link href="/assets/users.css?body=1" media="all" rel="stylesheet" type="text/css" />
+  <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+  <script src="/assets/jquery_ujs.js?body=1" type="text/javascript"></script>
+  <script src="/assets/adresses.js?body=1" type="text/javascript"></script>
+  <script src="/assets/clients.js?body=1" type="text/javascript"></script>
+  <script src="/assets/employees.js?body=1" type="text/javascript"></script>
+  <script src="/assets/event_types.js?body=1" type="text/javascript"></script>
+  <script src="/assets/events.js?body=1" type="text/javascript"></script>
+  <script src="/assets/pages.js?body=1" type="text/javascript"></script>
+  <script src="/assets/part_of_rules.js?body=1" type="text/javascript"></script>
+  <script src="/assets/regular_expressions.js?body=1" type="text/javascript"></script>
+  <script src="/assets/releases.js?body=1" type="text/javascript"></script>
+  <script src="/assets/results.js?body=1" type="text/javascript"></script>
+  <script src="/assets/rules.js?body=1" type="text/javascript"></script>
+  <script src="/assets/sessions.js?body=1" type="text/javascript"></script>
+  <script src="/assets/states.js?body=1" type="text/javascript"></script>
+  <script src="/assets/statuses.js?body=1" type="text/javascript"></script>
+  <script src="/assets/users.js?body=1" type="text/javascript"></script>
+  <script src="/assets/application.js?body=1" type="text/javascript"></script>
+  <meta content="authenticity_token" name="csrf-param" />
+  <meta content="yuTBpMsD4Yac7fq8NqEAXTuWxifei2KcHYfVc3wZhaM=" name="csrf-token" />
+</head>
+<body>
+
+<h1>Editing result</h1>
+
+<form accept-charset="UTF-8" action="/results_of_state_change/28" class="edit_result_state_change"
+      id="edit_result_state_change_28" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8"
+                                                                                                           type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /><input name="authenticity_token"
+                                                                                                                                                                                                     type="hidden" value="yuTBpMsD4Yac7fq8NqEAXTuWxifei2KcHYfVc3wZhaM=" /></div>
+
+  <div class="field">
+    <label for="result_state_change_name">Name</label>
+    <br/>
+    <input id="result_state_change_name" name="result_state_change[name]" size="30" type="text" value="Statuswechsel" />
+  </div>
+
+
+
+
+
+
+
+  <div class="field">
+    <p>
+      <b>Stati:</b><br/>
+      <select id="state_selector" name="state_selector" size="5"><option value="8">Status1</option>
+        <option value="9">Status2</option></select>
+    </p>
+  </div>
+
+  <p id="add_state">Status hinzufügen</p>
+
+  <h2>resultierender Status</h2>
+
+  <p id="selected_state">Status0</p>
+
+  <p id="testi">Status hinzufügen</p>
+
+
+
+
+  <div class="actions">
+    <input name="commit" type="submit" value="Update Result state change" />
+  </div>
+</form>
+
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $("#testi").click(function () {
+            alert("Test")
+        });
+    });
+</script>
+
+
+
+<a href="/results_of_state_change/28">Show</a> |
+<a href="/results">Back</a>
+
+
+
+<a href="/logout" data-method="delete" rel="nofollow">logout</a>
+
+</body>
+</html>

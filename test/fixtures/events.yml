@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  comment: MyString
+  benefit_date: 2013-08-07
+  template_again: 2013-08-07
+  event_type_id: 1
+  employee_id: 1
+  client_id: 1
+
+two:
+  comment: MyString
+  benefit_date: 2013-08-07
+  template_again: 2013-08-07
+  event_type_id: 1
+  employee_id: 1
+  client_id: 1

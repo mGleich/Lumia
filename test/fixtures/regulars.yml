@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  expression: MyString
+  name: MyString
+
+two:
+  expression: MyString
+  name: MyString

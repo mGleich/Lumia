@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @contact_partner.name %>
+</p>
+
+<p>
+  <b>Vorname:</b>
+  <%= @contact_partner.firstname %>
+</p>
+
+<p>
+  <b>Telefonnummer:</b>
+  <%= @contact_partner.tnumber %>
+</p>
+
+<p>
+  <b>E-Mail Adresse:</b>
+  <%= @contact_partner.email %>
+</p>
+
+<p>
+  <b>Institution:</b>
+  <%= @contact_partner.institution %>
+</p>
+
+<% @back = link_to 'Zurück', contact_partners_path %>

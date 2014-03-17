@@ -1,0 +1,23 @@
+<h1>Status Liste</h1>
+
+<table width="250px">
+  <tr>
+    <th>Zustand:</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @states.each do |state| %>
+  <tr>
+    <td><%= state.condition %></td>
+    <td><%= link_to 'Bearbeiten', edit_state_path(state) %></td>
+    <td><%= link_to 'Löschen', state, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= will_paginate @states %>
+
+<div style="margin-top: 25px;">
+<%= link_to 'Status anlegen', new_state_path %>
+ </div>

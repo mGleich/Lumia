@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lumia</title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="doc" class="yui-t1">
+  <div id="hd">
+    <div id="header"><h1>Lumia</h1></div>
+  </div>
+  <div id="bd">
+    <div id="yui-main">
+      <div class="yui-b">
+        <div class="content">
+          <div id="site">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="yui-b">
+      <div id="secondary">
+        <p style="font-size: 150%;">
+          Navigation
+        </p>
+
+        <p style="margin-top: 20px;">
+
+          <%= link_to 'Auslöser', releases_path %></p>
+
+        <p>
+          <%= link_to 'Regeln', rules_path %></p>
+
+        <p>
+          <%= link_to 'Ergebnisse', results_path %></p>
+
+        <p>
+          <%= link_to 'Regelausdrücke', regular_expressions_path %></p>
+
+        <p>
+          <%= link_to 'Ereignistypen', event_types_path %>  </p>
+
+        <p>
+          <%= link_to 'Status', states_path %></p>
+
+        <p>
+          <%= link_to 'Benutzerverwaltung', users_path %>
+        </p>
+
+        <p>
+          <%= link_to 'Benutzermenü', clients_path %></p>
+
+        <p style="margin-top: 50px;"><%= @back %></p>
+      </div>
+    </div>
+  </div>
+  <div id="ft">
+    <div id="footer"><p style="margin-left: 20px;">
+      <%= link_to "logout", logout_path, method: :delete %>
+    </p></div>
+  </div>
+</div>
+
+
+</body>
+</html>

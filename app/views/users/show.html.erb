@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @user.name %>
+</p>
+
+<p>
+  <b>Gruppe:</b>
+  <%= @user.role %>
+</p>
+
+<% @back = link_to 'Zurück', users_path %>

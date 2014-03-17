@@ -1,0 +1,29 @@
+<h1>Kontakt Partner Liste</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Vorname</th>
+    <th>Telefonnummer</th>
+    <th>E Mail</th>
+    <th>Organisation</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @contact_partners.each do |contact_partner| %>
+  <tr>
+    <td><%= contact_partner.name %></td>
+    <td><%= contact_partner.firstname %></td>
+    <td><%= contact_partner.tnumber %></td>
+    <td><%= contact_partner.email %></td>
+    <td><%= contact_partner.institution %></td>
+    <td><%= link_to 'Anzeigen', contact_partner %></td>
+    <td><%= link_to 'Bearbeiten', edit_contact_partner_path(contact_partner) %></td>
+    <td><%= link_to 'Entfernen', contact_partner, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= will_paginate @contact_partners %>

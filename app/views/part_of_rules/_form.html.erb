@@ -1,0 +1,233 @@
+<%= form_for @part_of_rule, html: {id: "new_part_of_rule"} do |f| %>
+    <% if @part_of_rule.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@part_of_rule.errors.count, "error") %> prohibited this part_of_rule from being saved:</h2>
+
+          <ul>
+            <% @part_of_rule.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <div class="field">
+      <%= f.label :name %>
+      <br/>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="field">
+      <%= f.label :boperator %>
+      <br/>
+      <%= f.select :boperator,
+                   ["UND", "ODER"], :prompt => "Bitte wählen" %>
+    </div>
+    <div class="field">
+      <%= f.label :test_value %>
+      <br/>
+      <%= f.number_field :test_value %>
+    </div>
+
+
+    <div id="erste_ebene">
+      <p>
+        <b>erste Ebene:</b><br/>
+        <%= select_tag :first_level, options_for_select(
+                @first_level_selection.collect { |d| [d.short_description, d.id] }) %>
+      </p>
+    </div>
+
+    <div id="zweite_ebene">
+      <p>
+        <b>zweite Ebene:</b><br/>
+        <%= select_tag :second_level, options_for_select(
+                @second_level_selection.collect { |d| [d.short_description, d.id] }) %>
+      </p>
+    </div>
+
+    <div id="dritte_ebene">
+      <p>
+        <b>dritte Ebene:</b><br/>
+        <%= select_tag :third_level, options_for_select(
+                @third_level_selection.collect { |d| [d.short_description, d.id] }) %>
+      </p>
+    </div>
+
+    <div id="vierte_ebene">
+      <p>
+        <b>vierte Ebene:</b><br/>
+        <%= select_tag :fourth_level, options_for_select(
+                @fourth_level_selection.collect { |d| [d.short_description, d.id] }) %>
+      </p>
+    </div>
+
+    <div id="fünfte_ebene">
+      <p>
+        <b>fünfte Ebene:</b><br/>
+        <%= select_tag :fifth_level, options_for_select(
+                @fifth_level_selection.collect { |d| [d.short_description, d.id] }) %>
+      </p>
+    </div>
+
+      <p id="add_event_type">Hinzufügen</p>
+
+
+
+    <div id="added_event_types">
+      <p>
+        <b>Hinzugefügte Ereignistypen:</b><br/>
+        <%= select_tag :add_event_types, options_for_select(
+                @add_event_types.collect { |d| [d.short_description, d.id] }), {"size" => 5} %>
+      </p>
+
+      <p id="remove_event_type">Entfernen</p>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+<% end %>
+
+<script>
+    $(document).ready(function () {
+
+        <% form = "#new_part_of_rule" %>
+
+        var add_event_types_arr = new Array(<%= @add_event_types.collect{ |d| [d.id] }.map(&:to_s).join(", ") %>);
+        var selected_arr = new Array();
+        var selected_text_arr = new Array(" ", " ", " ", " ", " ", " ");
+        var selected_text;
+        var selected_val;
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+            for (i = 0; i < add_event_types_arr.length; i++) {
+                $form.append($('<input>', {
+                    type: "hidden", name: "add_event_types_arr[]", value: add_event_types_arr[i]
+                }));
+            }
+        })
+
+        $('#first_level').change(function () {
+            if ($('#first_level :selected').val() == "") {
+                selected_arr[1] = 0;
+            } else {
+                selected_arr[1] = $('#first_level :selected').val();
+                selected_text_arr[1] = $('#first_level :selected').text();
+            }
+
+            $.ajax({
+                url: "<%= update_select_field_part_of_rules_path %>",
+                data: {
+                    id: $('#first_level :selected').val(),
+                    depth: 1
+                },
+                dataType: "script"
+            });
+            for (i = 2; i <= 5; i++) {
+                selected_arr[i] = 0;
+            }
+        });
+        $('#second_level').change(function () {
+            if ($('#second_level :selected').val() == "") {
+                selected_arr[2] = 0;
+            } else {
+                selected_arr[2] = $('#second_level :selected').val();
+                selected_text_arr[2] = $('#second_level :selected').text();
+            }
+
+            $.ajax({
+                url: "<%= update_select_field_part_of_rules_path %>",
+                data: {
+                    id: $('#second_level :selected').val(),
+                    depth: 2
+                },
+                dataType: "script"
+            });
+            for (i = 3; i <= 5; i++) {
+                selected_arr[i] = 0;
+            }
+        });
+        $('#third_level').change(function () {
+            if ($('#third_level :selected').val() == "") {
+                selected_arr[3] = 0;
+            } else {
+                selected_arr[3] = $('#third_level :selected').val();
+                selected_text_arr[3] = $('#third_level :selected').text();
+            }
+
+            $.ajax({
+                url: "<%= update_select_field_part_of_rules_path %>",
+                data: {
+                    id: $('#third_level :selected').val(),
+                    depth: 3
+                },
+                dataType: "script"
+            });
+            for (i = 4; i <= 5; i++) {
+                selected_arr[i] = 0;
+            }
+        });
+        $('#fourth_level').change(function () {
+            if ($('#fourth_level :selected').val() == "") {
+                selected_arr[4] = 0;
+            } else {
+                selected_arr[4] = $('#fourth_level :selected').val();
+                selected_text_arr[4] = $('#fourth_level :selected').text();
+            }
+
+            $.ajax({
+                url: "<%= update_select_field_part_of_rules_path %>",
+                data: {
+                    id: $('#fourth_level :selected').val(),
+                    depth: 4
+                },
+                dataType: "script"
+            });
+            selected_arr[5] = 0;
+
+        });
+        $('#fifth_level').change(function () {
+            if ($('#fifth_level :selected').val() == "") {
+                selected_arr[5] = 0;
+            } else {
+                selected_arr[5] = $('#fifth_level :selected').val();
+                selected_text_arr[5] = $('#fifth_level :selected').text();
+            }
+
+            $.ajax({
+                url: "<%= update_select_field_part_of_rules_path %>",
+                data: {
+                    id: $('#fifth_level :selected').val(),
+                    depth: 5
+                },
+                dataType: "script"
+            });
+        });
+
+        $("#add_event_type").click(function () {
+            selected_val = 2;
+            selected_text = "";
+            for (i = 1; i < selected_arr.length; i++) {
+                if (selected_arr[i] != 0) {
+                    selected_val = selected_arr[i];
+                    selected_text = selected_text_arr[i];
+                }
+            }
+
+            if (selected_val > 0 && add_event_types_arr.indexOf(selected_val) == -1) {
+                $('#add_event_types').append($('<option>', {
+                    value: selected_val,
+                    text: selected_text
+                }));
+                add_event_types_arr.push(selected_val);
+            }
+        });
+
+        $("#remove_event_type").click(function () {
+            if ($("#add_event_types :selected").val() > 0) {
+                $("#add_event_types option:selected").remove();
+            }
+        });
+    });
+</script>

@@ -1,0 +1,21 @@
+<%= javascript_include_tag "testfile" %>
+<h1>Klientenverwaltung</h1>
+
+
+<div id="search" style="text-align: left;">
+<%= form_tag clients_path, :method => 'get', :id => "clients_search" do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %>
+      <%= submit_tag "Suchen", :name => nil %>
+
+      <span style="margin-left: 50px;"><%= link_to 'Klient anlegen', new_client_path %> </span>
+    </p>
+<% end %>
+</div>
+
+<div id="clients">
+<%= render 'clients' %>
+</div>
+
+<br/>
+<%= will_paginate @clients %>

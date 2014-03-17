@@ -1,0 +1,126 @@
+<%= javascript_include_tag "jquery.chained" %>
+<%= form_for @event_type, html: {id: "new_event_types"} do |f| %>
+    <% if @event_type.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@event_type.errors.count, "error") %> prohibited this event_type from being saved:</h2>
+
+          <ul>
+            <% @event_type.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+     <b>Ereignistyp:</b><br/>
+    <%- # was hier passiert wird am besten hier beschrieben http://www.appelsiini.net/projects/chained      -%>
+    <%- # über die Methode set_selected werden die jeweiligen Arrays mit den ausgewählten Werten gefüllt      -%>
+    <select id="1_level" name="1_level" onchange="set_selected(1)">
+      <option value="" selected="selected">--</option>
+      <% @root.descendants.at_depth(1).each do |child| %>
+          <% if @event_type != child %>
+              <% if @event_type.id != nil && @ancestors.index(child.id) != nil %>
+                  <option value="<%= child.id %>" selected="selected"><%= child.short_description %></option>
+              <% else %>
+                  <option value="<%= child.id %>"><%= child.short_description %></option>
+              <% end %>
+          <% end %>
+      <% end %>
+    </select>
+
+    <%- # durch das class Attribut wird die zugehörigkeit zum Vaterelement erzeugt      -%>
+    <% for i in 2..4 %>
+        <select id="<%= "#{(i)}_level".to_sym %>" name="<%= "#{(i)}_level".to_sym %>" onchange="set_selected(<%= i %>)">
+          <option value="">--</option>
+          <% @root.descendants.at_depth(i).each do |child| %>
+              <% if @event_type != child %>
+                  <% if @event_type.id != nil && @ancestors.index(child.id) != nil %>
+                      <option value="<%= child.id %>" class="<%= child.parent_id %>" selected="selected"><%= child.short_description %></option>
+                  <% else %>
+                      <option value="<%= child.id %>" class="<%= child.parent_id %>"><%= child.short_description %></option>
+                  <% end %>
+              <% end %>
+          <% end %>
+        </select>
+    <% end %>
+
+    <div class="field">
+      <b>Beschreibung:</b>
+      <br/>
+      <%= f.text_field :description %>
+    </div>
+    <div class="field">
+      <b>Kurzbeschreibung:</b>
+      <br/>
+      <%= f.text_field :short_description %>
+    </div>
+    <div class="field">
+      <b>Nummer:</b>
+      <br/>
+      <%= f.number_field :number %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Ereignistyp speichern" %>
+    </div>
+
+<% end %>
+
+<script>
+
+    var selected_arr = new Array();
+    var parent;
+
+    $(document).ready(function () {
+
+        <%-# fortsetzung des chained Menü http://www.appelsiini.net/projects/chained hier wird die verknüpfung unter den selectfeldern erzeugt -%>
+        <% for i in 1..3 %>
+        $("#<%= "#{(i+1)}_level".to_sym %>").chained("#<%= "#{(i)}_level".to_sym %>");
+        <% end %>
+
+        <% form = "#new_event_types" %>
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+
+            parent = 2;
+            for (i = 1; i < selected_arr.length; i++) {
+
+                if (selected_arr[i] != 0) {
+                    parent = selected_arr[i];
+                }
+            }
+
+            var testvar = document.getElementById("event_type_description");
+            if (testvar.value == "") {
+                alert("Es dürfen keine Ereignistypen ohne eine Beschreibung erstellt werden")
+                return false;
+            }
+
+            var testvar = document.getElementById("event_type_short_description");
+            if (testvar.value == "") {
+                alert("Es dürfen keine Regulärenausdrücke ohne eine kurz Beschreibung erstellt werden")
+                return false;
+            }
+
+            $form.append($('<input>', {
+                type: "hidden", name: "parent", value: parent
+            }));
+        })
+    });
+
+    <%-# Diese Methoden werden von den Selectfeldern der EventTypen aufgerufen -%>
+    <%-# Hier werden die Arrays selected_arr und selected_text_arr gefüllt -%>
+    function set_selected(number) {
+        var sel_field = document.getElementById(number + "_level");
+        if (sel_field.options[sel_field.selectedIndex].value == "") {
+            selected_arr[number] = 0;
+        } else {
+            selected_arr[number] = sel_field.options[sel_field.selectedIndex].value;
+        }
+
+        <%-# Hier werden die Plätze im Array tiefer als das gerade ausgewählte Element gelöscht -%>
+        var j = number + 1;
+        for (j; j <= 5; j++) {
+            selected_arr[j] = 0;
+        }
+    }
+</script>

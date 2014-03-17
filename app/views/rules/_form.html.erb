@@ -1,0 +1,343 @@
+<%= javascript_include_tag "jquery.chained" %>
+<%= form_for @rule, html: {id: "new_rule", name: "new_rule"} do |f| %>
+    <% if @rule.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@rule.errors.count, "error") %> prohibited this rule from being saved:</h2>
+
+          <ul>
+            <% @rule.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <b>Name:</b>
+      <br/>
+      <%= text_field_tag 'rule_name', @rule.name %>
+    </div>
+
+    <b>Ereignistypen:</b> <br/>
+    <%- # was hier passiert wird am besten hier beschrieben http://www.appelsiini.net/projects/chained         -%>
+    <%- # über die Methode set_selected werden die jeweiligen Arrays mit den ausgewählten Werten gefüllt         -%>
+    <select id="1_level" name="1_level" onchange="set_selected(1)">
+      <option value="" selected="selected">--</option>
+      <% @root.descendants.at_depth(1).each do |child| %>
+          <option value="<%= child.id %>"><%= child.short_description %></option>
+      <% end %>
+    </select>
+
+    <%- # durch das class Attribut wird die zugehörigkeit zum Vaterelement erzeugt         -%>
+    <% for i in 2..5 %>
+        <select id="<%= "#{(i)}_level".to_sym %>" name="<%= "#{(i)}_level".to_sym %>" onchange="set_selected(<%= i %>)">
+          <option value="">--</option>
+          <% @root.descendants.at_depth(i).each do |child| %>
+              <option value="<%= child.id %>" class="<%= child.parent_id %>"><%= child.short_description %></option>
+          <% end %>
+        </select>
+    <% end %>
+
+    <% i = 0 %>
+    <div id="Teilregeln" style="height:250px; width:700px; overflow:auto; margin-top: 25px;">
+
+      <% @rule.part_of_rules.each do |part_of_rule| %>
+          <table id="part_of_rule<%= i %>" name="part_of_rule<%= i %>" style="border-width: 1px;
+                  border-style: solid;
+                  border-color: #000000; margin-top: 5px;">
+            <col width="150">
+            <col width="150">
+            <col width="300">
+            <col width="100">
+            <tr>
+              <td>
+                <%= i+1 %> Teilregel
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <%= select_tag "part_of_rule" + i.to_s + "[test_value]", options_for_select(
+                        @twenty.each { |d| [d, d] }, part_of_rule.test_value), {"size" => 1} %>
+              </td>
+              <td>
+                <%= select_tag "part_of_rule" + i.to_s + "[boperator]", options_for_select(["UND", "ODER"], part_of_rule.boperator) %>
+              </td>
+              <td>
+                <%= select_tag "part_of_rule" + i.to_s + "_add_event_types", options_for_select(
+                        part_of_rule.event_types.collect { |l| [l.short_description, l.id] }), {"size" => 5} %>
+              </td>
+              <td>
+                <p id="add_event_type_button<%= i %>" onclick="addIndex('<%=i%>')"> Hinzufuegen </p>
+
+                <p id="remove_event_type_button<%= i %>" onclick="deleteIndex('<%=i%>')"> Entfernen </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p id="remove_part_of_rule_button<%= i %>" onclick="delete_part_of_rule('<%=i%>')"> Teilregel
+                  Entfernen </p>
+              </td>
+
+            </tr>
+          </table>
+
+          <% i=i+1 %>
+      <% end %>
+    </div>
+
+    <p id="add_part_of_rule">Teilregel hinzufügen</p>
+
+    <div class="actions">
+      <%= f.submit "Regel speichern" %>
+    </div>
+
+
+
+<% end %>
+
+<script>
+    <%-# Beide Arrays werden mit den Werten gefüllt die in den verfügbaren Selectfeldern für die EventTypen ausgewählt werden -%>
+    <%-# jede Stelle steht dabei für ein Selectfeld -%>
+    var selected_arr = new Array();
+    var selected_text_arr = new Array(" ", " ", " ", " ", " ", " ");
+
+    var amount_part_of_rules = <%=@rule.part_of_rules.size%>;
+
+    $(document).ready(function () {
+        <%-# fortsetzung des chained Menü http://www.appelsiini.net/projects/chained hier wird die verknüpfung unter den selectfeldern erzeugt -%>
+        <% for i in 1..4 %>
+        $("#<%= "#{(i+1)}_level".to_sym %>").chained("#<%= "#{(i)}_level".to_sym %>");
+        <% end %>
+
+        <% form = "#new_rule" %>
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+
+            for (var i = 0; i < amount_part_of_rules; i++) {
+                <%-# Hier findet die Überprüfung statt ob es leere Selectfelder gibt -%>
+                var select_field = document.getElementById("part_of_rule" + i + "_add_event_types");
+                if (select_field != null && select_field.length == 0) {
+                    alert("Es dürfen keine Teilregeln ohne Ereignistypen erzeugt werden")
+                    return false;
+                }
+            }
+
+            <%-# abfangen eines Fehlers um ein unnötiges Senden zu vermeiden -%>
+            var rule_name = document.getElementById("rule_name");
+            if (rule_name.value == "") {
+                alert("Es dürfen keine Regeln ohne einen eindeutigen Namen erstellt werden")
+                return false;
+            }
+
+            for (var i = 0; i < amount_part_of_rules; i++) {
+                <%-# hier werden alle Inhalte der Selectfelder ausgewählt und dem Form hinzugefügt -%>
+                var select = document.getElementById("part_of_rule" + i + "_add_event_types");
+                if (select != null) {
+                    for (var j = 0; j < select.length; j++) {
+                        $form.append($('<input>', {
+                            type: "hidden", name: "part_of_rule" + i + "[add_event_types][]", value: select.options[j].value
+                        }));
+                    }
+                }
+            }
+        })
+
+        //Teilregeln werden erstellt
+        $("#add_part_of_rule").click(function () {
+            <%-# neue Teilregel mit ID wird an den DomBaum gehängt -%>
+            var form = document.getElementById("Teilregeln");
+
+            var part_of_rule = document.createElement("table");
+            part_of_rule.setAttribute("style", "border-width: 1px; border-style: solid; border-color: #000000; margin-top: 5px;");
+            part_of_rule.setAttribute("id", "part_of_rule" + amount_part_of_rules);
+            part_of_rule.setAttribute("name", "part_of_rule" + amount_part_of_rules);
+
+            var col = document.createElement("col");
+            col.setAttribute("width", "150");
+            part_of_rule.appendChild(col);
+            var col = document.createElement("col");
+            col.setAttribute("width", "150");
+            part_of_rule.appendChild(col);
+            var col = document.createElement("col");
+            col.setAttribute("width", "300");
+            part_of_rule.appendChild(col);
+            var col = document.createElement("col");
+            col.setAttribute("width", "100");
+            part_of_rule.appendChild(col);
+
+            var tablerow = document.createElement("tr");
+            var tabledata = document.createElement("td");
+            tabledata.appendChild(document.createTextNode((amount_part_of_rules + 1) + " Teilregel"))
+            tablerow.appendChild(tabledata);
+            part_of_rule.appendChild(tablerow);
+
+            var tablerow = document.createElement("tr");
+            var tabledata = document.createElement("td");
+            tabledata.appendChild(document.createTextNode("Mindestmenge"));
+            tablerow.appendChild(tabledata);
+            var tabledata = document.createElement("td");
+            tabledata.appendChild(document.createTextNode("Boolescher Operator"));
+            tablerow.appendChild(tabledata);
+            var tabledata = document.createElement("td");
+            tabledata.appendChild(document.createTextNode("hinzugefügte Ereignistypen"));
+            tablerow.appendChild(tabledata);
+            part_of_rule.appendChild(tablerow);
+
+            var tablerow = document.createElement("tr");
+            var tabledata = document.createElement("td");
+
+            <%-# diese Teilregel wird dann mit Elementen gefüllt hier die TestMenge 1 bis 20 -%>
+            var select_element = document.createElement("select");
+            select_element.setAttribute("id", "part_of_rule" + amount_part_of_rules + "[test_value]");
+            select_element.setAttribute("name", "part_of_rule" + amount_part_of_rules + "[test_value]");
+
+            for (var i = 1; i <= 20; i++) {
+                var option_element = document.createElement("option");
+                option_element.setAttribute("value", i);
+                option_element.appendChild(document.createTextNode(i));
+                select_element.appendChild(option_element);
+            }
+            tabledata.appendChild(select_element);
+            tablerow.appendChild(tabledata);
+
+
+            <%-# der Boperator mit UND und ODER elementen -%>
+            var tabledata = document.createElement("td");
+            var select_element = document.createElement("select");
+            select_element.setAttribute("id", "part_of_rule" + amount_part_of_rules + "[boperator]");
+            select_element.setAttribute("name", "part_of_rule" + amount_part_of_rules + "[boperator]");
+            select_element.setAttribute("style", "margin-left:20px;");
+
+            var option_element = document.createElement("option");
+            option_element.setAttribute("value", "UND");
+            option_element.appendChild(document.createTextNode("UND"));
+            select_element.appendChild(option_element);
+
+            var option_element = document.createElement("option");
+            option_element.setAttribute("value", "ODER");
+            option_element.appendChild(document.createTextNode("ODER"));
+            select_element.appendChild(option_element);
+
+            tabledata.appendChild(select_element);
+            tablerow.appendChild(tabledata);
+
+            <%-# SelectFeld für die EventTypen -%>
+            var tabledata = document.createElement("td")
+            var select_element = document.createElement("select");
+            select_element.setAttribute("id", "part_of_rule" + amount_part_of_rules + "_add_event_types");
+            select_element.setAttribute("size", "5");
+            select_element.setAttribute("multiple", "multiple");
+            select_element.setAttribute("style", "margin-left:20px;");
+
+            tabledata.appendChild(select_element);
+            tablerow.appendChild(tabledata);
+
+
+            var tabledata = document.createElement("td")
+            var add_event_type_button = document.createElement('p');
+
+            add_event_type_button.id = "add_event_type_button" + amount_part_of_rules;
+            <%-# beim klick auf den Button Hinzufügen wird die Methode addIndex aufgerufen als Übergabe Parameter wird die Nummer der Teilregel übergeben -%>
+            <%-# damit eindeutig identifiziert werden kann welchem Feld die Auswahl hinzugefügt wird -%>
+            <%-# die Zahl ist beim Erzeugen Statisch und damit unabhängig von der JS Variable -%>
+            add_event_type_button.setAttribute("onclick", "addIndex('" + amount_part_of_rules + "')");
+
+            add_event_type_button.appendChild(document.createTextNode("Hinzufuegen"));
+
+            tabledata.appendChild(add_event_type_button);
+
+            <%-# hier das selbe mit dem Entfernen Button und der deleteIndex Methode -%>
+            var remove_event_type_button = document.createElement("p");
+            remove_event_type_button.id = "remove_event_type_button" + amount_part_of_rules;
+            remove_event_type_button.setAttribute("onclick", "deleteIndex('" + amount_part_of_rules + "')");
+
+            remove_event_type_button.appendChild(document.createTextNode("Entfernen"));
+            tabledata.appendChild(remove_event_type_button);
+            tablerow.appendChild(tabledata);
+            part_of_rule.appendChild(tablerow);
+
+            <%-# Und zuletzt der Button der die komplette Teilregel aus dem DOMBaum entfernt -%>
+            var tablerow = document.createElement("tr");
+            var tabledata = document.createElement("td");
+            var remove_part_of_rule_button = document.createElement("p");
+            remove_part_of_rule_button.id = "remove_part_of_rule_button" + amount_part_of_rules;
+            remove_part_of_rule_button.setAttribute("onclick", "delete_part_of_rule('" + amount_part_of_rules + "')");
+            remove_part_of_rule_button.appendChild(document.createTextNode("Teilregel Entfernen"));
+            tabledata.appendChild(remove_part_of_rule_button);
+            tablerow.appendChild(tabledata);
+            part_of_rule.appendChild(tablerow);
+            form.appendChild(part_of_rule)
+            amount_part_of_rules = amount_part_of_rules + 1;
+        });
+
+    });
+
+    function addIndex(number) {
+        var select = document.getElementById("part_of_rule" + number + "_add_event_types");
+        var selected_val = 0;
+        var selected_text = "";
+        <%-# das Array mit den Werten wird solange durchlaufen bis es auf eine Null trifft. -%>
+        <%-# so wird sichergestellt das immer das tiefste ausgewählte Element im Baum hinzugefügt wird -%>
+        for (i = 1; i < selected_arr.length; i++) {
+            if (selected_arr[i] != 0) {
+                selected_val = selected_arr[i];
+                selected_text = selected_text_arr[i];
+            }
+        }
+
+        if (selected_val != "" && selected_val > 0) {
+            for (var i = 0; i < select.length; i++) {
+                <%-# Überprüfung ob der Wert bereits im Select vorhanden ist. -%>
+                if (select[i].value == selected_val) {
+                    alert("Die Auswahl ist bereits vorhanden");
+                    return false;
+                }
+            }
+            $(select).append($('<option>', {
+                value: selected_val,
+                text: selected_text
+            }));
+        }
+    }
+
+    function deleteIndex(number) {
+        var added_event_types = document.getElementById("part_of_rule" + number + "_add_event_types");
+
+        if (added_event_types.options[added_event_types.selectedIndex].value > 0) {
+            added_event_types.remove(added_event_types.selectedIndex);
+        }
+    }
+
+    <%-# Teilregel wird aus dem DOMBaum entfernt -%>
+    function delete_part_of_rule(number) {
+        var node = document.getElementById("part_of_rule" + number);
+        var form = document.getElementById("Teilregeln");
+        form.removeChild(node);
+    }
+
+    <%-# Diese Methoden werden von den Selectfeldern der EventTypen aufgerufen -%>
+    <%-# Hier werden die Arrays selected_arr und selected_text_arr gefüllt -%>
+    function set_selected(number) {
+        var sel_field = document.getElementById(number + "_level");
+        if (sel_field.options[sel_field.selectedIndex].value == "") {
+            selected_arr[number] = 0;
+        } else {
+            selected_arr[number] = sel_field.options[sel_field.selectedIndex].value;
+            selected_text_arr[number] = sel_field.options[sel_field.selectedIndex].text;
+        }
+
+
+        <%-# Hier werden die Plätze im Array tiefer als das gerade ausgewählte Element gelöscht -%>
+        var j = number + 1;
+        for (j; j <= 5; j++) {
+            selected_arr[j] = 0;
+        }
+    }
+
+</script>
+
+
+
+
+

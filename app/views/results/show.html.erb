@@ -1,0 +1,56 @@
+
+<p id="notice"><%= notice %></p>
+<h1>Ergebnis</h1>
+<p>
+  <b>Name:</b>
+  <%= @result.name %>
+</p>
+<% if @result.type == "ResultInfo" %>
+    <p>
+      <b>Info:</b>
+      <%= @result.info %>
+    </p>
+<% end %>
+
+<% if @result.type == "ResultStateChange" %>
+    <p>
+      <b>Status:</b>
+      <%= @result.state.condition %>
+    </p>
+<% end %>
+
+<% if @result.type == "ResultChangeEventTypeAmount" %>
+
+    <p>
+      <b>Eventtyp Operator:</b>
+      <%= @result.event_type_operator %>
+    </p>
+    <% if @result.event_types.size > 0 %>
+        <p>
+          <b>EventTypes:</b>
+        <div style="height:300px; width:500px; overflow:auto;">
+        <table width="500px;">
+          <tr>
+            <th>Beschreibung</th>
+            <th>Kurz Beschreibung</th>
+            <th>Nummer</th>
+          </tr>
+
+          <% @result.event_types.each do |event_type| %>
+              <tr>
+                <td><%= event_type.description %></td>
+                <td><%= event_type.short_description %></td>
+                <td><%= event_type.number %></td>
+              </tr>
+          <% end %>
+        </table>
+            </div>
+        </p>
+    <% end %>
+<% end %>
+
+<% if @result.type == "ResultLock" %>
+    <b>Der Klient wird gesperrt</b> </br>
+<% end %>
+
+<% @back = link_to 'Zurück', results_path %>

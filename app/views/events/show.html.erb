@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+  <h1>Ereignis für <%= @client.first_name%> <%= @client.name %></h1>
+
+<p>
+  <b>Typ des Ereignisses:</b><br/>
+  <%= @event_type.short_description %>
+</p>
+
+<p>
+  <b>Kommentar:</b><br/>
+  <%= @event.comment %>
+</p>
+
+<table width="600">
+  <col width="300">
+  <col width="300">
+  <tr>
+    <td>
+      <b>Datum der Leistung:</b>
+      <%= @event.benefit_date %>
+    </td>
+    <td>
+      <b>User:</b>
+      <% if @event.user != nil %>
+          <%= @event.user.name %>
+      <% else %>
+          <b>vom System erzeugt</b>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Wiedervorlage:</b>
+      <%= @event.template_again %>
+    </td>
+  </tr>
+</table>
+
+<% @back = link_to 'Zurück',  clients_path %>

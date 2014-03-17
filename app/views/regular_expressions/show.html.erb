@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Regelausdruck</h1>
+
+<p>
+  <b>Name:</b>
+  <%= @regular_expression.name %>
+</p>
+
+<table width="300px;">
+  <tr>
+    <td>
+      <p>
+        <b>Hinzugefügte Auslöser:</b><br/>
+        <%= select_tag :add_releases, options_for_select(
+                @regular_expression.releases.collect { |d| [d.name, d.id] }), {"size" => 5} %>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>
+        <b>Hinzugefügte Regeln:</b><br/>
+        <%= select_tag :add_rules, options_for_select(
+                @regular_expression.rules.collect { |d| [d.name, d.id] }), {"size" => 5} %>
+      </p>
+</td>
+  </tr>
+  <tr>
+    <td>
+      <p>
+        <b>Hinzugefügte Ergebnisse:</b><br/>
+        <%= select_tag :add_results, options_for_select(
+                @regular_expression.results.collect { |d| [d.name, d.id] }), {"size" => 5} %>
+      </p>
+    </td>
+  </tr>
+</table>
+<% @back = link_to 'Zurück', regular_expressions_path %>

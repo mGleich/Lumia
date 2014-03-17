@@ -1,0 +1,140 @@
+<%= javascript_include_tag "jquery.chained" %>
+<%= form_for @event, html: {id: "new_event"} do |f| %>
+    <% if @event.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+          <ul>
+            <% @event.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <div class="field">
+      <%= f.hidden_field :client_id %>
+    </div>
+
+    <%- # was hier passiert wird am besten hier beschrieben http://www.appelsiini.net/projects/chained      -%>
+    <%- # über die Methode set_selected werden die jeweiligen Arrays mit den ausgewählten Werten gefüllt      -%>
+    <select id="1_level" name="1_level" onchange="set_selected(<%= 1 %>)">
+      <% if @event.id == nil %>
+          <option value="" selected="selected">--</option>
+      <% end %>
+      <% (@root.descendants.at_depth(1)&@event_type_amount).each do |child| %>
+          <% if @event.id != nil && @event.event_type_id != nil && @selected_event_type_amount.index(child.id) != nil %>
+              <option value="<%= child.id %>" selected="selected"><%= child.short_description %></option>
+          <% else %>
+              <option value="<%= child.id %>"><%= child.short_description %></option>
+          <% end %>
+      <% end %>
+    </select>
+
+    <%- # durch das class Attribut wird die zugehörigkeit zum Vaterelement erzeugt      -%>
+    <% for i in 2..5 %>
+        <select id="<%= "#{(i)}_level".to_sym %>" name="<%= "#{(i)}_level".to_sym %>" onchange="set_selected(<%= i %>)">
+          <option value="">--</option>
+          <% (@root.descendants.at_depth(i)&@event_type_amount).each do |child| %>
+              <% if @event.id != nil && @event.event_type_id != nil && @selected_event_type_amount.index(child.id) != nil %>
+                  <option value="<%= child.id %>" class="<%= child.parent_id %>" selected="selected"><%= child.short_description %></option>
+              <% else %>
+                  <option value="<%= child.id %>" class="<%= child.parent_id %>"><%= child.short_description %></option>
+              <% end %>
+          <% end %>
+        </select>
+    <% end %>
+
+
+    <div class="field">
+      <b>Kommentar:</b><br/>
+      <%= f.text_area :comment %>
+    </div>
+     <table>
+       <tr>
+         <td>
+           <b>Datum der Leistung:</b><br/>
+           <%= f.text_field :benefit_date %>
+         </td>
+         <td>
+             <b>Mitarbeiter:</b><br/>
+             <%= f.select :user_id,
+                          User.find(:all).collect { |d| [d.name, d.id] } %>
+
+         </td>
+       </tr>
+       <tr><td>
+         <b>Wiedervorlage:</b>
+         <br/>
+         <%= f.text_field :template_again %>
+       </td>
+       <td></td></tr>
+     </table>
+
+    <div class="actions">
+      <%= f.submit "Leistung anlegen"%>
+    </div>
+<% end %>
+
+<script>
+    <%-# Beide Arrays werden mit den Werten gefüllt die in den verfügbaren Selectfeldern für die EventTypen ausgewählt werden -%>
+    <%-# jede Stelle steht dabei für ein Selectfeld -%>
+    var selected_arr = new Array();
+
+    $(document).ready(function () {
+
+        //Eintrag für Datepicker
+        $("#event_benefit_date").datepicker({ dateFormat: "dd-mm-yy" });
+        $( "#event_benefit_date" ).datepicker( "option", "dayNamesMin", [ "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" ] );
+        $( "#event_benefit_date" ).datepicker( "option", "monthNames", [ "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "December" ] );
+        $("#event_template_again").datepicker({ dateFormat: "dd-mm-yy" });
+        $( "#event_template_again" ).datepicker( "option", "dayNamesMin", [ "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" ] );
+        $( "#event_template_again" ).datepicker( "option", "monthNames", [ "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "December" ] );
+
+        <%-# fortsetzung des chained Menü http://www.appelsiini.net/projects/chained hier wird die verknüpfung unter den selectfeldern erzeugt -%>
+        <% for i in 1..4 %>
+        $("#<%= "#{(i+1)}_level".to_sym %>").chained("#<%= "#{(i)}_level".to_sym %>");
+        <% end %>
+
+        <% form = "#new_event" %>
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+
+            selected = 2;
+            for (i = 1; i < selected_arr.length; i++) {
+                if (selected_arr[i] != 0) {
+                    selected = selected_arr[i];
+                }
+            }
+             if(selected != 2){
+            $form.append($('<input>', {
+                type: "hidden", name: "selected", value: selected
+            }));
+        } else {
+                 alert("Es dürfen keine Ereignisse ohne ein Ereignistyp angelegt werden")
+                 return false;
+             }
+
+        })
+    });
+
+
+    <%-# Diese Methoden werden von den Selectfeldern der EventTypen aufgerufen -%>
+    <%-# Hier werden die Arrays selected_arr und selected_text_arr gefüllt -%>
+    function set_selected(number) {
+        var sel_field = document.getElementById(number + "_level");
+        if (sel_field.options[sel_field.selectedIndex].value == "") {
+            selected_arr[number] = 0;
+        } else {
+            selected_arr[number] = sel_field.options[sel_field.selectedIndex].value;
+        }
+
+
+        <%-# Hier werden die Plätze im Array tiefer als das gerade ausgewählte Element gelöscht -%>
+        var j = number + 1;
+        for (j; j <= 5; j++) {
+            selected_arr[j] = 0;
+        }
+    }
+</script>
+

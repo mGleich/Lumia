@@ -1,0 +1,339 @@
+<%= javascript_include_tag "jquery.chained" %>
+<%= form_for @result, html: {id: "new_result"} do |f| %>
+    <div style="height:450px; width:700px; overflow:auto;">
+      <% if @result.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@result.errors.count, "error") %> prohibited this result from being saved:</h2>
+
+            <ul>
+              <% @result.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+      <div class="field">
+        <div class="field">
+          <b>Name:</b>
+          <br/>
+          <%= text_field_tag 'name', @result.name %>
+        </div>
+      </div>
+
+      <div class="field">
+        <p>
+          <b>Typ:</b><br/>
+          <%= select_tag :type, options_for_select(["Statuswechsel", "Ereignistypen Menge aendern", "Info", "Client Sperren"], @type), {"size" => 4} %>
+        </p>
+      </div>
+
+
+      <div id="Eventtypen_Menge_aendern_auswahl" style="display:none">
+
+
+        <div class="field">
+          <p>
+            <b>Ereignis Typ Operator:</b><br/>
+            <%= select_tag :event_type_operator, options_for_select(["Zur Menge Hinzufuegen", "Aus Menge entfernen", "Alle Ereignistypen loeschen", "Alle Ereignistypen hinzufuegen"], @result.event_type_operator), {"size" => 5} %>
+          </p>
+        </div>
+      </div>
+
+
+      <div id="Info" style="display:none">
+
+
+        <div class="field">
+          <b>Info:</b>
+          <br/>
+          <%= text_field_tag 'info', @result.info %>
+        </div>
+
+      </div>
+
+
+      <div id="Statuswechsel" style="display:none">
+
+
+        <div class="field">
+          <p>
+            <b>Status:</b><br/>
+            <%= select_tag :state_selector, options_for_select(@available_states.collect { |d| [d.condition, d.id] }), {"size" => 5} %>
+          </p>
+        </div>
+
+        <p id="add_state">Status hinzufügen</p>
+
+        <b>resultierender Status:</b>
+
+        <p id="selected_state"><% if @result.state != nil %><%= @result.state.condition %><% end %></p>
+      </div>
+
+
+      <div id="Eventtypen_Menge_aendern" style="display:none">
+
+        <select id="1_level" name="1_level" onchange="set_selected(1)">
+          <option value="" selected="selected">--</option>
+          <% @root.descendants.at_depth(1).each do |child| %>
+              <option value="<%= child.id %>"><%= child.short_description %></option>
+          <% end %>
+        </select>
+
+        <%- # durch das class Attribut wird die zugehörigkeit zum Vaterelement erzeugt        -%>
+        <% for i in 2..5 %>
+            <select id="<%= "#{(i)}_level".to_sym %>" name="<%= "#{(i)}_level".to_sym %>" onchange="set_selected(<%= i %>)">
+              <option value="">--</option>
+              <% @root.descendants.at_depth(i).each do |child| %>
+                  <option value="<%= child.id %>" class="<%= child.parent_id %>"><%= child.short_description %></option>
+              <% end %>
+            </select>
+        <% end %>
+
+        <p id="add_event_type">Hinzufügen</p>
+
+        <p>
+          <b>Hinzugefügte Ereignistypen:</b><br/>
+          <%= select_tag :add_event_types_, options_for_select(
+                  @add_event_types.collect { |d| [d.short_description, d.id] }), {"size" => 5, multiple: true} %>
+        </p>
+
+        <p id="remove_event_type">Entfernen</p>
+
+      </div>
+
+
+      <div id="Client_Sperren" style="display:none">
+          <b>Der Klient wird gesperrt</b> <br/>
+        </div>
+
+      <div class="actions">
+        <%= f.submit "Ergebnis speichern" %>
+      </div>
+
+    </div>
+<% end %>
+
+<script>
+
+    var selected_arr = new Array();
+    var selected_text_arr = new Array(" ", " ", " ", " ", " ", " ");
+
+    var selected_text;
+    var selected_val;
+
+    <%-# notwendig um die Elemente beim Laden anzuzeigen-%>
+    var sel_type = document.getElementById('type');
+    if (sel_type.value == "Ereignistypen Menge aendern") {
+        $("#Eventtypen_Menge_aendern_auswahl").show();
+    }
+    else {
+        $("#Eventtypen_Menge_aendern_auswahl").hide();
+        $("#Eventtypen_Menge_aendern").hide();
+    }
+
+    if (sel_type.value == "Statuswechsel") {
+        $("#Statuswechsel").show();
+    }
+    else {
+        $("#Statuswechsel").hide();
+    }
+
+    if (sel_type.value == "Info") {
+        $("#Info").show();
+    }
+    else {
+        $("#Info").hide();
+    }
+
+    if (sel_type.value == "Client Sperren") {
+        $("#Client_Sperren").show();
+    }
+    else {
+        $("#Client_Sperren").hide();
+    }
+
+    var sel_type_ext = document.getElementById('event_type_operator');
+
+    if (sel_type_ext.value == "Aus Menge entfernen" || sel_type_ext.value == "Zur Menge Hinzufuegen") {
+        $("#Eventtypen_Menge_aendern").show();
+    }
+    else {
+        $("#Eventtypen_Menge_aendern").hide();
+    }
+
+
+    $(document).ready(function () {
+
+
+        <%-# fortsetzung des chained Menü http://www.appelsiini.net/projects/chained hier wird die verknüpfung unter den selectfeldern erzeugt -%>
+        <% for i in 1..4 %>
+        $("#<%= "#{(i+1)}_level".to_sym %>").chained("#<%= "#{(i)}_level".to_sym %>");
+        <% end %>
+
+        <% form = "#new_result" %>
+
+
+        <% if @result.type == "ResultStateChange" %>
+        var selected_state = new Object();
+        selected_state.val = <%=@result.state.id %>;
+        selected_state.text = "<%=@result.state.condition %>";
+        <% else %>
+        var selected_state = new Object();
+        selected_state.val = undefined;
+        selected_state.text = undefined;
+        <% end %>
+
+        var sel_type = document.getElementById('type');
+        sel_type.onchange = function () {
+            if (sel_type.value == "Ereignistypen Menge aendern") {
+                $("#Eventtypen_Menge_aendern_auswahl").show();
+            }
+            else {
+                $("#Eventtypen_Menge_aendern_auswahl").hide();
+                $("#Eventtypen_Menge_aendern").hide();
+            }
+
+            if (sel_type.value == "Statuswechsel") {
+                $("#Statuswechsel").show();
+            }
+            else {
+                $("#Statuswechsel").hide();
+            }
+
+            if (sel_type.value == "Info") {
+                $("#Info").show();
+            }
+            else {
+                $("#Info").hide();
+            }
+
+            if (sel_type.value == "Client Sperren") {
+                $("#Client_Sperren").show();
+            }
+            else {
+                $("#Client_Sperren").hide();
+            }
+        }
+
+        var sel_type_ext = document.getElementById('event_type_operator');
+
+        sel_type_ext.onchange = function () {
+            if (sel_type_ext.value == "Aus Menge entfernen" || sel_type_ext.value == "Zur Menge Hinzufuegen") {
+                $("#Eventtypen_Menge_aendern").show();
+            }
+            else {
+                $("#Eventtypen_Menge_aendern").hide();
+            }
+        }
+
+        $("#add_event_type").click(function () {
+            selected_val = 2;
+            selected_text = "";
+            for (i = 1; i < selected_arr.length; i++) {
+                if (selected_arr[i] != 0) {
+                    selected_val = selected_arr[i];
+                    selected_text = selected_text_arr[i];
+                }
+            }
+
+            var select = document.getElementById("add_event_types_");
+            for (var i = 0; i < select.length; i++) {
+                <%-# Überprüfung ob der Wert bereits im Select vorhanden ist. -%>
+                if (select[i].value == selected_val) {
+                    alert("Der Eintrag ist bereits vorhanden");
+                    return false;
+                }
+            }
+
+            if (selected_val > 2) {
+                $('#add_event_types_').append($('<option>', {
+                    value: selected_val,
+                    text: selected_text
+                }));
+            }
+        });
+
+        $("#remove_event_type").click(function () {
+            if ($("#add_event_types_ :selected").val() > 0) {
+                $("#add_event_types_ option:selected").remove();
+            }
+        });
+
+        $("#add_state").click(function () {
+            $("#selected_state").html($("#state_selector :selected").text());
+            if (selected_state.val != undefined) {
+                $('#state_selector').append($('<option>', {
+                    value: selected_state.val,
+                    text: selected_state.text
+                }));
+            }
+            selected_state.val = $("#state_selector :selected").val()
+            selected_state.text = $("#state_selector :selected").text()
+            $("#state_selector option:selected").remove();
+        });
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+
+            var sel_type = document.getElementById('type');
+
+            <%-# hier werden alle Inhalte der Selectfelder ausgewählt -%>
+            if (sel_type.value == "Ereignistypen Menge aendern") {
+                <%-# hier werden alle Inhalte der Selectfelder ausgewählt und dem Form hinzugefügt -%>
+                var select = document.getElementById("add_event_types_");
+                if (select != null) {
+                    for (var j = 0; j < select.length; j++) {
+                        $form.append($('<input>', {
+                            type: "hidden", name: "add_event_types[]", value: select.options[j].value
+                        }));
+                    }
+                }
+            }
+
+
+            if (sel_type.value == "Statuswechsel") {
+                $form.append($('<input>', {
+                    type: "hidden", name: "selected_state", value: selected_state.val
+                }));
+            }
+
+
+            if (sel_type.value == "Info" && $('#result_info').val() == "") {
+                alert("Ohne Eintrag ist das Abspeichern nicht möglich");
+                return false;
+            }
+
+            var testvar = document.getElementById("name");
+            if (testvar.value == "") {
+                alert("Es dürfen keine Ergebnisse ohne einen Namen erstellt werden")
+                return false;
+            }
+
+            if (sel_type.value == "Statuswechsel" && selected_state.val == undefined) {
+                alert("Es dürfen keine Ergebnisse ohne einen Status erstellt werden")
+                return false;
+            }
+        })
+    });
+
+
+    <%-# Diese Methoden werden von den Selectfeldern der EventTypen aufgerufen -%>
+    <%-# Hier werden die Arrays selected_arr und selected_text_arr gefüllt -%>
+    function set_selected(number) {
+        var sel_field = document.getElementById(number + "_level");
+        if (sel_field.options[sel_field.selectedIndex].value == "") {
+            selected_arr[number] = 0;
+        } else {
+            selected_arr[number] = sel_field.options[sel_field.selectedIndex].value;
+            selected_text_arr[number] = sel_field.options[sel_field.selectedIndex].text;
+        }
+
+        <%-# Hier werden die Plätze im Array tiefer als das gerade ausgewählte Element gelöscht -%>
+        var j = number + 1;
+        for (j; j <= 5; j++) {
+            selected_arr[j] = 0;
+        }
+    }
+</script>
+

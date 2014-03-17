@@ -1,0 +1,28 @@
+<h1>Listing part_of_rules</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Operator</th>
+    <th>Test Wert</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @part_of_rules.each do |part_of_rule| %>
+  <tr>
+    <td><%= part_of_rule.name %></td>
+    <td><%= part_of_rule.boperator %></td>
+    <td><%= part_of_rule.test_value %></td>
+    <td><%= link_to 'Show', part_of_rule %></td>
+    <td><%= link_to 'Edit', edit_part_of_rule_path(part_of_rule) %></td>
+    <td><%= link_to 'Destroy', part_of_rule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Part of rule', new_part_of_rule_path %>
+<%= link_to 'Hauptmenü', pages_admin_menu_path %>

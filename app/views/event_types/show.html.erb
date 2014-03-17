@@ -1,0 +1,18 @@
+<h1>Ereignistyp</h1>
+<p id="notice"><%= notice %></p>
+ <p>
+  <b>Beschreibung:</b>
+  <%= @event_type.description %>
+</p>
+
+<p>
+  <b>Kurz Beschreibung:</b>
+  <%= @event_type.short_description %>
+</p>
+
+<p>
+  <b>Nummer:</b>
+  <%= @event_type.number %>
+</p>
+
+<% @back = link_to 'Zurück', event_types_path %>

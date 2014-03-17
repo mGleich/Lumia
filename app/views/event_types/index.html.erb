@@ -1,0 +1,33 @@
+<h1>Ereignistypen</h1>
+
+<table width="600px;">
+  <tr>
+    <th>ID:</th>
+    <th>Kurzbeschreibung:</th>
+    <th>Nummer:</th>
+    <th>Knoten:</th>
+    <th>Vater ID:</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% @event_types.each do |event_type| %>
+      <%= content_tag_for(:tr, event_type) do %>
+          <td><%= event_type.id %></td>
+          <td><%= event_type.short_description %></td>
+          <td><%= event_type.number %></td>
+          <td><%= event_type.node %></td>
+          <td><%= event_type.parent_id %></td>
+          <td><%= link_to 'Anzeigen', event_type %></td>
+          <% if event_type.id > 2 %>
+              <td><%= link_to 'Bearbeiten', edit_event_type_path(event_type) %></td>
+              <td><%= link_to 'Löschen', event_type, method: :delete, data: {confirm: 'Sind Sie sich sicher?'} %></td>
+          <% end %>
+      <% end %>
+  <% end %>
+</table>
+
+<%= will_paginate @event_types %>
+<div style="margin-top: 25px;">
+<%= link_to 'Ereignistyp anlegen', new_event_type_path %>
+</div>

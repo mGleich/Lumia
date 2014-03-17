@@ -1,0 +1,204 @@
+<%= form_for @regular_expression, html: {id: "new_regular_expression"} do |f| %>
+    <div style="height:500px; width:800px; overflow:auto;">
+    <table>
+      <tr>
+        <td>
+          <div class="field">
+            <b>Name:</b>
+            <br/>
+            <%= f.text_field :name %>
+          </div>
+        </td>
+        <td>
+          <% if @regular_expression.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@regular_expression.errors.count, "error") %> prohibited this regular_expression from
+                  being
+                  saved:</h2>
+
+                <ul>
+                  <% @regular_expression.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+          <% end %></td>
+      </tr>
+    </table>
+
+
+
+    <table width="600px;">
+      <col width="300">
+      <col width="300">
+      <tr>
+        <td>
+          <p>
+            <b>Hinzugefügte Auslöser:</b><br/>
+            <%= select_tag :add_releases, options_for_select(
+                    @regular_expression.releases.collect { |d| [d.name, d.id] }), {"size" => 3} %>
+          </p>
+
+          <p id="remove_release">Auslöser entfernen</p>
+        </td>
+        <td>
+          <p>
+            <b>Auslöser:</b><br/>
+            <%= select_tag :releases_selection, options_for_select(
+                    @available_releases.collect { |d| [d.name, d.id] }), {"size" => 3} %>
+          </p>
+
+          <p id="add_release">Auslöser hinzufügen</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <b>Hinzugefügte Regeln:</b><br/>
+            <%= select_tag :add_rules, options_for_select(
+                    @regular_expression.rules.collect { |d| [d.name, d.id] }), {"size" => 3} %>
+          </p>
+
+          <p id="remove_rule">Regel entfernen</p></td>
+        <td><p>
+          <b>Regel:</b><br/>
+          <%= select_tag :rules_selection, options_for_select(
+                  @available_rules.collect { |d| [d.name, d.id] }), {"size" => 3} %>
+        </p>
+
+          <p id="add_rule">Regel Hinzufügen</p></td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <b>Hinzugefügte Ergebnisse:</b><br/>
+            <%= select_tag :add_results, options_for_select(
+                    @regular_expression.results.collect { |d| [d.name, d.id] }), {"size" => 3} %>
+          </p>
+
+          <p id="remove_result">Ergebnis entfernen</p>
+        </td>
+        <td>
+          <p>
+            <b>Ergebnis:</b><br/>
+            <%= select_tag :results_selection, options_for_select(
+                    @available_results.collect { |d| [d.name, d.id] }), {"size" => 3} %>
+          </p>
+
+          <p id="add_result">Ergebnis hinzufügen</p></td>
+      </tr>
+    </table>
+
+
+    <div class="actions">
+      <%= f.submit "Regulären Ausdruck speichern" %>
+    </div>
+    </div>
+<% end %>
+
+<script>
+
+    $(document).ready(function () {
+
+        <% form = "#new_regular_expression" %>
+
+        var add_releases_arr = new Array(<%= @regular_expression.releases.collect{ |d| [d.id] }.map(&:to_s).join(", ") %>);
+        var add_rules_arr = new Array(<%= @regular_expression.rules.collect{ |d| [d.id] }.map(&:to_s).join(", ") %>);
+        var add_results_arr = new Array(<%= @regular_expression.results.collect{ |d| [d.id] }.map(&:to_s).join(", ") %>);
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+
+            var testvar = document.getElementById("regular_expression_name");
+            if (testvar.value == "") {
+                alert("Es dürfen keine Regulärenausdrücke ohne einen Namen erstellt werden")
+                return false;
+            }
+
+            for (i = 0; i < add_releases_arr.length; i++) {
+                $form.append($('<input>', {
+                    type: "hidden", name: "add_releases_arr[]", value: add_releases_arr[i]
+                }));
+            }
+            for (i = 0; i < add_rules_arr.length; i++) {
+                $form.append($('<input>', {
+                    type: "hidden", name: "add_rules_arr[]", value: add_rules_arr[i]
+                }));
+            }
+            for (i = 0; i < add_results_arr.length; i++) {
+                $form.append($('<input>', {
+                    type: "hidden", name: "add_results_arr[]", value: add_results_arr[i]
+                }));
+            }
+        })
+
+        $("#add_release").click(function () {
+            if ($("#releases_selection :selected").val() > 0) {
+                $('#add_releases').append($('<option>', {
+                    value: $("#releases_selection :selected").val(),
+                    text: $("#releases_selection :selected").text()
+                }));
+                add_releases_arr.push($("#releases_selection :selected").val());
+                $("#releases_selection option:selected").remove();
+            }
+        });
+
+        $("#remove_release").click(function () {
+            if ($("#add_releases :selected").val() > 0) {
+                $('#releases_selection').append($('<option>', {
+                    value: $("#add_releases :selected").val(),
+                    text: $("#add_releases :selected").text()
+                }));
+                add_releases_arr.splice(add_releases_arr.indexOf($("#add_releases :selected").val()), 1);
+                $("#add_releases option:selected").remove();
+
+            }
+        });
+
+
+        $("#add_rule").click(function () {
+            if ($("#rules_selection :selected").val() > 0) {
+                $('#add_rules').append($('<option>', {
+                    value: $("#rules_selection :selected").val(),
+                    text: $("#rules_selection :selected").text()
+                }));
+                add_rules_arr.push($("#rules_selection :selected").val());
+                $("#rules_selection option:selected").remove();
+            }
+        });
+
+        $("#remove_rule").click(function () {
+            if ($("#add_rules :selected").val() > 0) {
+                $('#rules_selection').append($('<option>', {
+                    value: $("#add_rules :selected").val(),
+                    text: $("#add_rules :selected").text()
+                }));
+                add_rules_arr.splice(add_rules_arr.indexOf($("#add_rules :selected").val()), 1);
+                $("#add_rules option:selected").remove();
+            }
+        });
+
+
+        $("#add_result").click(function () {
+            if ($("#results_selection :selected").val() > 0) {
+                $('#add_results').append($('<option>', {
+                    value: $("#results_selection :selected").val(),
+                    text: $("#results_selection :selected").text()
+                }));
+                add_results_arr.push($("#results_selection :selected").val());
+                $("#results_selection option:selected").remove();
+            }
+        });
+
+        $("#remove_result").click(function () {
+            if ($("#add_results :selected").val() > 0) {
+                $('#results_selection').append($('<option>', {
+                    value: $("#add_results :selected").val(),
+                    text: $("#add_results :selected").text()
+                }));
+                add_results_arr.splice(add_results_arr.indexOf($("#add_results :selected").val()), 1);
+                $("#add_results option:selected").remove();
+            }
+        });
+    });
+</script>

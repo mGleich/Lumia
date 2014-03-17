@@ -1,0 +1,5 @@
+<h1>Ereignis für Nutzer <%= @client.first_name %><%= @client.name %> bearbeiten</h1>
+
+<%= render 'form' %>
+
+<% @back = link_to 'Zurück',  events_to_client_path(@client) %>

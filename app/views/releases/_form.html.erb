@@ -1,0 +1,211 @@
+<%= javascript_include_tag "jquery.chained" %>
+<%= form_for @release, html: {id: "new_release"} do |f| %>
+    <% if @release.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@release.errors.count, "error") %> prohibited this release from being saved:</h2>
+
+          <ul>
+            <% @release.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <b>Name:</b>
+      <br/>
+      <%= f.text_field :name %>
+    </div>
+    <b>Ereignistyp:</b><br/>
+    <%- # was hier passiert wird am besten hier beschrieben http://www.appelsiini.net/projects/chained       -%>
+    <%- # über die Methode set_selected werden die jeweiligen Arrays mit den ausgewählten Werten gefüllt       -%>
+    <select id="1_level" name="1_level" onchange="set_selected(1)">
+      <option value="" selected="selected">--</option>
+      <% @root.descendants.at_depth(1).each do |child| %>
+          <option value="<%= child.id %>"><%= child.short_description %></option>
+      <% end %>
+    </select>
+
+    <%- # durch das class Attribut wird die zugehörigkeit zum Vaterelement erzeugt       -%>
+    <% for i in 2..5 %>
+        <select id="<%= "#{(i)}_level".to_sym %>" name="<%= "#{(i)}_level".to_sym %>" onchange="set_selected(<%= i %>)">
+          <option value="">--</option>
+          <% @root.descendants.at_depth(i).each do |child| %>
+              <option value="<%= child.id %>" class="<%= child.parent_id %>"><%= child.short_description %></option>
+          <% end %>
+        </select>
+    <% end %>
+
+    <p id="add_event_type">Hinzufügen</p>
+
+    <%= check_box_tag 'create_by_system', value = "1", @by_system %> <b>Vom System erzeugt</b>
+    <div style="border-width: 1px;
+            border-style: solid;
+            border-color: #000000; width: 500px;">
+    <p>
+      <b>Hinzugefügte Ereignistypen:</b><br/>
+      <%= select_tag :add_event_types_, options_for_select(
+              @add_event_types.collect { |d| [d.short_description, d.id] }), {"size" => 5, multiple: true} %>
+    </p>
+
+    <p id="remove_event_type">Entfernen</p>
+    </div>
+    <table style="border-width: 1px;
+            border-style: solid;
+            border-color: #000000; margin-top: 5px;" width="500">
+      <col width="250">
+      <col width="250">
+      <tr>
+        <td>
+          <b>Status Auswahl:</b><br/>
+          <%= select_tag :state_selection, options_for_select(
+                  @available_states.collect { |d| [d.condition, d.id] }), {"size" => 4} %>
+           <br/>
+          <p id="add_state">Hinzufügen</p>
+      </td>
+        <td>
+          <b>Hinzugefügte Status:</b><br/>
+          <%= select_tag :add_states_, options_for_select(
+                  @add_states.collect { |d| [d.condition, d.id] }), {"size" => 4, multiple: true} %>
+
+           <br/>
+          <p id="remove_state">Entfernen</p>
+        </td>
+      </tr>
+
+    </table>
+
+    <div class="actions">
+      <%= f.submit "Auslöser speichern"%>
+    </div>
+
+<% end %>
+
+<script>
+
+    var selected_arr = new Array();
+    var selected_text_arr = new Array(" ", " ", " ", " ", " ", " ");
+
+    var selected_text;
+    var selected_val;
+
+    $(document).ready(function () {
+
+        <%-# fortsetzung des chained Menü http://www.appelsiini.net/projects/chained hier wird die verknüpfung unter den selectfeldern erzeugt -%>
+        <% for i in 1..4 %>
+        $("#<%= "#{(i+1)}_level".to_sym %>").chained("#<%= "#{(i)}_level".to_sym %>");
+        <% end %>
+
+        <% form = "#new_release" %>
+
+        $("<%= "#{form}" %>").submit(function () {
+            $form = $(this)
+
+            var testvar = document.getElementById("release_name");
+            if (testvar.value == "") {
+                alert("Es dürfen keine Auslöser ohne einen Namen erstellt werden")
+                return false;
+            }
+
+            <%-# hier werden alle Inhalte der Selectfelder ausgewählt -%>
+            var select = document.getElementById("add_states_");
+            if (select != null) {
+                    for (var j = 0; j < select.length; j++) {
+                        $form.append($('<input>', {
+                            type: "hidden", name: "add_states[]", value: select.options[j].value
+                        }));
+                    }
+            }
+
+            <%-# hier werden alle Inhalte der Selectfelder ausgewählt -%>
+            var select = document.getElementById("add_event_types_");
+            if (select != null) {
+                for (var j = 0; j < select.length; j++) {
+                    $form.append($('<input>', {
+                        type: "hidden", name: "add_event_types[]", value: select.options[j].value
+                    }));
+                }
+            }
+
+            var select = document.getElementById("add_event_types_");
+            var checkboxtag = document.getElementById("create_by_system") ;
+            if (select.length == 0 && checkboxtag.checked == false) {
+             alert("Es dürfen keine Auslöser ohne einen Ereignistyp angelegt werden");
+                return false;
+            }
+        })
+
+        $("#add_event_type").click(function () {
+            selected_val = 2;
+            selected_text = "";
+            for (i = 1; i < selected_arr.length; i++) {
+                if (selected_arr[i] != 0) {
+                    selected_val = selected_arr[i];
+                    selected_text = selected_text_arr[i];
+                }
+            }
+
+            var select = document.getElementById("add_event_types_");
+            for (var i = 0; i < select.length; i++) {
+                <%-# Überprüfung ob der Wert bereits im Select vorhanden ist. -%>
+                if (select[i].value == selected_val) {
+                    alert("Der Eintrag ist bereits vorhanden");
+                    return false;
+                }
+            }
+            if (selected_val > 2) {
+                $('#add_event_types_').append($('<option>', {
+                    value: selected_val,
+                    text: selected_text
+                }));
+            }
+        });
+
+        $("#remove_event_type").click(function () {
+            if ($("#add_event_types_ :selected").val() > 0) {
+                $("#add_event_types_ option:selected").remove();
+            }
+        });
+
+
+        $("#add_state").click(function () {
+            if ($("#state_selection :selected").val() > 0) {
+                $('#add_states_').append($('<option>', {
+                    value: $("#state_selection :selected").val(),
+                    text: $("#state_selection :selected").text()
+                }));
+                $("#state_selection option:selected").remove();
+            }
+        });
+
+        $("#remove_state").click(function () {
+            if ($("#add_states_ :selected").val() > 0) {
+                $('#state_selection').append($('<option>', {
+                    value: $("#add_states_ :selected").val(),
+                    text: $("#add_states_ :selected").text()
+                }));
+                $("#add_states_ option:selected").remove();
+            }
+        });
+    });
+
+    <%-# Diese Methoden werden von den Selectfeldern der EventTypen aufgerufen -%>
+    <%-# Hier werden die Arrays selected_arr und selected_text_arr gefüllt -%>
+    function set_selected(number) {
+        var sel_field = document.getElementById(number + "_level");
+        if (sel_field.options[sel_field.selectedIndex].value == "") {
+            selected_arr[number] = 0;
+        } else {
+            selected_arr[number] = sel_field.options[sel_field.selectedIndex].value;
+            selected_text_arr[number] = sel_field.options[sel_field.selectedIndex].text;
+        }
+
+        <%-# Hier werden die Plätze im Array tiefer als das gerade ausgewählte Element gelöscht -%>
+        var j = number + 1;
+        for (j; j <= 5; j++) {
+            selected_arr[j] = 0;
+        }
+    }
+</script>
+

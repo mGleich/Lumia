@@ -1,0 +1,40 @@
+<h1>Ereignisse von <%= @client.first_name%> <%=@client.name %></h1>
+
+<table border="1">
+  <tr>
+    <th>Datum der Leistung:</th>
+    <th>Wiedervorlage:</th>
+    <th>Ereignistyp:</th>
+    <th>Mitarbeiter</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @events.each do |event| %>
+      <tr>
+        <td><%= event.benefit_date %></td>
+        <td><%= event.template_again %></td>
+        <% if event.event_type != nil %>
+            <td><%= event.event_type.short_description %></td>
+        <% else %>
+            <td></td>
+        <% end %>
+        <% if event.user_id != nil %>
+            <td><%= event.user.name %></td>
+        <% else %>
+            <td>System</td>
+        <% end %>
+        <td><%= link_to 'Anzeigen', event %></td>
+        <% if event.user_id != nil %>
+            <td><%= link_to 'Bearbeiten', edit_event_path(event) %></td>
+        <% else %>
+            <td></td>
+        <% end %>
+        <td><%= link_to 'Löschen', event, method: :delete, data: {confirm: 'Sind Sie sich sicher?'} %></td>
+      </tr>
+  <% end %>
+</table>
+<%= will_paginate @events %>
+
+<% @back = link_to 'Zurück', clients_path %>

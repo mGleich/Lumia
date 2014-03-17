@@ -1,0 +1,39 @@
+<h1>Auslöser</h1>
+<p id="notice"><%= notice %></p>
+<p>
+  <b>Name:</b>
+  <%= @release.name %>
+</p>
+<% if @release.event_types.size > 0 %>
+    <p>
+      <b>Hinzugefügte Ereignistypen</b>
+    </p>
+    <div style="height:150px; width:500px; overflow:auto;">
+    <table width="500px;">
+      <tr>
+        <th>Beschreibung:</th>
+        <th>Kurz Beschreibung:</th>
+        <th>Nummer:</th>
+      </tr>
+
+      <% @release.event_types.each do |event_type| %>
+          <tr>
+            <td><%= event_type.description %></td>
+            <td><%= event_type.short_description %></td>
+            <td><%= event_type.number %></td>
+          </tr>
+      <% end %>
+    </table>
+        </div>
+<% end %>
+
+<% if @release.states.size > 0 %>
+    <p>
+      <b>Hinzugefügte Status:</b>
+    </p>
+
+      <%= select_tag "numbers_of_client[]", options_for_select(
+              @release.states.collect { |l| [l.condition, l.condition] }), {"size" => 5, multiple: false} %>
+<% end %>
+
+<% @back = link_to 'Zurück', releases_path %>

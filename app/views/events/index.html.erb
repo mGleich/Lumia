@@ -1,0 +1,38 @@
+<h1>Listing events</h1>
+
+<table>
+  <tr>
+    <th>Benefit date</th>
+    <th>Client</th>
+    <th>Comment</th>
+    <th>Event type</th>
+    <th>Template again</th>
+    <th>User id integer</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @events.each do |event| %>
+      <tr>
+        <td><%= event.benefit_date %></td>
+        <td><%= event.client.name %></td>
+        <td><%= event.comment %></td>
+        <td><%= event.event_type_id %></td>
+        <td><%= event.template_again %></td>
+        <% if event.user != nil %>
+            <td><%= event.user.name %></td>
+        <% else %>
+            <td></td>
+        <% end %>
+        <td><%= link_to 'Show', event %></td>
+        <td><%= link_to 'Edit', edit_event_path(event) %></td>
+        <td><%= link_to 'Destroy', event, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+      </tr>
+  <% end %>
+</table>
+
+<br/>
+
+<%= link_to 'New Event', new_event_path %>
+<%= link_to 'Hauptmenü', pages_admin_menu_path %>
