@@ -10,7 +10,7 @@ end
 
 group :development, :test do
   gem 'sqlite3'
-  gem "heroku", "~> 3.6.0"
+  gem 'heroku'
 end
 
 gem 'will_paginate', '~> 3.0.4'
