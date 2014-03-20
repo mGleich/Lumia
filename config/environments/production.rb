@@ -1,6 +1,6 @@
 Lumia::Application.configure do
 
-  config.assets.precompile += %w( jquery.chained.js testfile.js)
+  config.assets.precompile += %w( jquery.chained.js)
 
   # Settings specified here will take precedence over those in config/application.rb
 
