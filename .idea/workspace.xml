@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c04f85df-c296-4332-b5af-e417659ef127" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/releases/index.html.erb" afterPath="$PROJECT_DIR$/app/views/releases/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/states/index.html.erb" afterPath="$PROJECT_DIR$/app/views/states/index.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/application.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/application.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Lumia.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -215,10 +215,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html.erb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="index.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/releases/index.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="19" selection-start="318" selection-end="318" vertical-scroll-proportion="0.7515723">
+            <state line="15" column="19" selection-start="318" selection-end="318" vertical-scroll-proportion="-9.807693">
               <folding />
             </state>
           </provider>
@@ -235,10 +235,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="application.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="2" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
+            <state line="14" column="25" selection-start="647" selection-end="647" vertical-scroll-proportion="0.69186044">
               <folding />
             </state>
           </provider>
@@ -248,7 +248,31 @@
         <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
-              <folding />
+              <folding>
+                <marker date="1391875765202" expanded="true" signature="21:1240" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="28:189" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="196:1232" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="226:1220" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="242:293" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="309:1059" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="333:492" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="359:481" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="389:468" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="415:453" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="516:1050" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="543:1039" placeholder="..." />
+                <marker date="1391875765202" expanded="false" signature="563:579" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="580:614" placeholder="..." />
+                <marker date="1391875765202" expanded="false" signature="636:653" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="654:727" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="739:818" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="874:955" placeholder="..." />
+                <marker date="1391875765202" expanded="false" signature="993:1010" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="1075:1213" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="1097:1204" placeholder="..." />
+                <marker date="1391875765202" expanded="false" signature="1108:1126" placeholder="..." />
+                <marker date="1391875765202" expanded="true" signature="1127:1198" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -288,9 +312,9 @@
         <option value="$PROJECT_DIR$/config/environments/production.rb" />
         <option value="$PROJECT_DIR$/app/views/clients/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/layouts/admin.erb" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/application.js" />
         <option value="$PROJECT_DIR$/app/views/states/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/releases/index.html.erb" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/application.js" />
       </list>
     </option>
   </component>
@@ -395,8 +419,22 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="Lumia" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Lumia" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -414,47 +452,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="assets" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="states" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="releases" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
+              <option name="myItemId" value="javascripts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1114,7 +1116,31 @@
     <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <marker date="1391875765202" expanded="true" signature="21:1240" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="28:189" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="196:1232" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="226:1220" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="242:293" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="309:1059" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="333:492" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="359:481" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="389:468" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="415:453" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="516:1050" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="543:1039" placeholder="..." />
+            <marker date="1391875765202" expanded="false" signature="563:579" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="580:614" placeholder="..." />
+            <marker date="1391875765202" expanded="false" signature="636:653" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="654:727" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="739:818" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="874:955" placeholder="..." />
+            <marker date="1391875765202" expanded="false" signature="993:1010" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="1075:1213" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="1097:1204" placeholder="..." />
+            <marker date="1391875765202" expanded="false" signature="1108:1126" placeholder="..." />
+            <marker date="1391875765202" expanded="true" signature="1127:1198" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1127,13 +1153,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="2" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/states/index.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="16" selection-start="265" selection-end="265" vertical-scroll-proportion="-4.230769">
@@ -1143,7 +1162,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/releases/index.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="19" selection-start="318" selection-end="318" vertical-scroll-proportion="0.7515723">
+        <state line="15" column="19" selection-start="318" selection-end="318" vertical-scroll-proportion="-9.807693">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="25" selection-start="647" selection-end="647" vertical-scroll-proportion="0.69186044">
           <folding />
         </state>
       </provider>
