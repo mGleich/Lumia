@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c04f85df-c296-4332-b5af-e417659ef127" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/admin.erb" afterPath="$PROJECT_DIR$/app/views/layouts/admin.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/application.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/application.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/releases/index.html.erb" afterPath="$PROJECT_DIR$/app/views/releases/index.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/states/index.html.erb" afterPath="$PROJECT_DIR$/app/views/states/index.html.erb" />
     </list>
     <ignored path="Lumia.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -19,7 +18,7 @@
     <file path="/20130807155029_join_release_rule.rb" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1375890813389" ignored="false" />
     <file path="/20130807155455_join_results_rules.rb" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1375891140382" ignored="false" />
     <file path="/Ruby Console" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1391748092005" ignored="false" />
-    <file path="/index.html.erb" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1395365314420" ignored="false" />
+    <file path="/index.html.erb" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1395369013342" ignored="false" />
     <file path="/event_types_controller.rb" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1391878297670" ignored="false" />
     <file path="/destroy.js.erb" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1391878447495" ignored="false" />
     <file path="/_form.html.erb" changelist="c04f85df-c296-4332-b5af-e417659ef127" time="1391921643446" ignored="false" />
@@ -210,7 +209,16 @@
       <file leaf-file-name="index.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/states/index.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="39" selection-start="288" selection-end="288" vertical-scroll-proportion="-4.230769">
+            <state line="13" column="16" selection-start="265" selection-end="265" vertical-scroll-proportion="-4.230769">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html.erb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/views/releases/index.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="19" selection-start="318" selection-end="318" vertical-scroll-proportion="0.7515723">
               <folding />
             </state>
           </provider>
@@ -227,10 +235,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="application.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="2" selection-start="579" selection-end="579" vertical-scroll-proportion="0.5436047">
+            <state line="11" column="2" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -279,10 +287,10 @@
         <option value="$PROJECT_DIR$/app/views/contact_partners/index.html.erb" />
         <option value="$PROJECT_DIR$/config/environments/production.rb" />
         <option value="$PROJECT_DIR$/app/views/clients/index.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/states/index.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/releases/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/layouts/admin.erb" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/application.js" />
+        <option value="$PROJECT_DIR$/app/views/states/index.html.erb" />
+        <option value="$PROJECT_DIR$/app/views/releases/index.html.erb" />
       </list>
     </option>
   </component>
@@ -410,39 +418,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layouts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
+              <option name="myItemId" value="states" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -460,11 +436,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="javascripts" />
+              <option name="myItemId" value="releases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Lumia" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Lumia" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1114,23 +1104,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/releases/index.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="21" selection-start="324" selection-end="324" vertical-scroll-proportion="0.6929348">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/releases/_form.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="17.653847">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/states/index.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="39" selection-start="288" selection-end="288" vertical-scroll-proportion="-4.230769">
           <folding />
         </state>
       </provider>
@@ -1153,7 +1129,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="2" selection-start="579" selection-end="579" vertical-scroll-proportion="0.5436047">
+        <state line="11" column="2" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/states/index.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="16" selection-start="265" selection-end="265" vertical-scroll-proportion="-4.230769">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/releases/index.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="19" selection-start="318" selection-end="318" vertical-scroll-proportion="0.7515723">
           <folding />
         </state>
       </provider>

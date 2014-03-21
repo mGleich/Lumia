@@ -11,7 +11,7 @@
   <tr>
     <td><%= state.condition %></td>
     <td><%= link_to 'Bearbeiten', edit_state_path(state) %></td>
-    <td><%= button_to 'Löschen', state, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %></td>
+    <td><%= link_to 'Löschen', state, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %></td>
   </tr>
 <% end %>
 </table>
