@@ -11,9 +11,9 @@
 <% @releases.each do |release| %>
   <tr>
     <td><%=release.name%></td>
-    <td><%= link_to 'Anzeigen', release %></td>
-    <td><%= link_to 'Bearbeiten', edit_release_path(release) %></td>
-    <td><%= link_to 'Löschen', release, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %></td>
+    <td><%= button_to 'Anzeigen', release %></td>
+    <td><%= button_to 'Bearbeiten', edit_release_path(release) %></td>
+    <td><%= button_to 'Löschen', release, method: :delete, data: { confirm: 'Sind Sie sich sicher?' } %></td>
   </tr>
 <% end %>
 </table>
