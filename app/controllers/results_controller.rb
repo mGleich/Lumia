@@ -105,22 +105,19 @@ class ResultsController < ApplicationController
     @result = Result.find(params[:id])
     @result.name = params[:name]
 
-    @result.event_types.clear
-    @result.state = nil
-    @result.info = nil
-    @result.event_type_operator = nil
-
     if params[:type] == "Statuswechsel"
       @result.type = "ResultStateChange"
+      clear_entity
       if params[:selected_state] != nil && params[:selected_state] != ""
         @state = State.find(params[:selected_state])
         @result.state = @state
       end
+
     end
 
     if params[:type] == "Ereignistypen Menge aendern"
       @result.type = "ResultChangeEventTypeAmount"
-
+      clear_entity
       if  params[:event_type_operator] != nil && params[:event_type_operator] != ""
         @result.event_type_operator = params[:event_type_operator]
 
@@ -138,11 +135,13 @@ class ResultsController < ApplicationController
 
     if params[:info] != nil && (params[:type]) == "Info"
       @result.type = "ResultInfo"
+      clear_entity
       @result.info = params[:info]
     end
 
     if params[:type] == "Client Sperren"
       @result.type = "ResultLock"
+      clear_entity
     end
 
     respond_to do |format|
@@ -197,5 +196,14 @@ class ResultsController < ApplicationController
     if @result.type == "ResultLock"
       @type = "Client Sperren"
     end
+  end
+
+  def clear_entity
+    @result.save
+    @result = Result.find(params[:id])
+    @result.event_types.clear
+    @result.state = nil
+    @result.info = nil
+    @result.event_type_operator = nil
   end
 end

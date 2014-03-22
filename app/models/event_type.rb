@@ -1,6 +1,6 @@
 class EventType < ActiveRecord::Base
   attr_accessible :description, :number, :short_description, :node, :parent_id
-  has_many :events
+  has_many :events, dependent: :nullify
   has_and_belongs_to_many :part_of_rules
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :results

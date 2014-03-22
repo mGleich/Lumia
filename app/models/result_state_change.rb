@@ -3,6 +3,7 @@ class ResultStateChange < Result
   validates_presence_of :state_id
 
   def execute_result (client)
+    if self.state != nil
     event = client.events.build
     if client.state == nil
       event.comment = "Statusaenderung durch das System zu #{self.state.condition}"
@@ -14,5 +15,6 @@ class ResultStateChange < Result
     client.state = self.state
     client.save
     event.save
+    end
   end
 end

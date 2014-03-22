@@ -49,7 +49,7 @@ class ResultChangeEventTypeAmount < Result
     end
 
     #Es sollen alle EventTypen für den Client gelöscht werden
-    if self.event_type_operator == "Alle Event Typen loeschen"
+    if self.event_type_operator == "Alle Ereignistypen loeschen"
       AvailableEtToClient.where(:client_id => client.id).each do |entry|
         entry.marker = -1
         entry.save
@@ -57,7 +57,7 @@ class ResultChangeEventTypeAmount < Result
     end
 
     #Es werden alle verfügbaren EventTypen hinzugefügt werden
-    if self.event_type_operator == "Alle Event Typen hinzufuegen"
+    if self.event_type_operator == "Alle Ereignistypen hinzufuegen"
       EventType.where(:node => false).each do |event_type|
         entry = AvailableEtToClient.where(:client_id => client.id, :event_type_id => event_type.id)
         if entry.empty?

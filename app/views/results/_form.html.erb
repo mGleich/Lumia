@@ -174,7 +174,7 @@
         <% form = "#new_result" %>
 
 
-        <% if @result.type == "ResultStateChange" %>
+        <% if @result.type == "ResultStateChange" && @result.state_id != nil %>
         var selected_state = new Object();
         selected_state.val = <%=@result.state.id %>;
         selected_state.text = "<%=@result.state.condition %>";
