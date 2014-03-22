@@ -112,25 +112,31 @@ class ResultsController < ApplicationController
 
     if params[:type] == "Statuswechsel"
       @result.type = "ResultStateChange"
-      @state = State.find(params[:selected_state])
-      @result.state = @state
+      if params[:selected_state] != nil && params[:selected_state] != ""
+        @state = State.find(params[:selected_state])
+        @result.state = @state
+      end
     end
 
     if params[:type] == "Ereignistypen Menge aendern"
       @result.type = "ResultChangeEventTypeAmount"
-      @result.event_types.clear
-      if (params[:event_type_operator]) == "Zur Menge Hinzufuegen" || (params[:event_type_operator]) == "Aus Menge entfernen"
+
+      if  params[:event_type_operator] != nil && params[:event_type_operator] != ""
         @result.event_type_operator = params[:event_type_operator]
-        if params[:add_event_types] != nil
-          params[:add_event_types].each do |f|
-            @event_type = EventType.find(f)
-            @result.event_types << @event_type
+
+        if (params[:event_type_operator]) == "Zur Menge Hinzufuegen" || (params[:event_type_operator]) == "Aus Menge entfernen"
+
+          if params[:add_event_types] != nil
+            params[:add_event_types].each do |f|
+              @event_type = EventType.find(f)
+              @result.event_types << @event_type
+            end
           end
         end
       end
     end
 
-    if params[:type] == "Info"
+    if params[:info] != nil && (params[:type]) == "Info"
       @result.type = "ResultInfo"
       @result.info = params[:info]
     end
