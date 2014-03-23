@@ -15,7 +15,7 @@
   <%= hidden_field_tag :direction, params[:direction] %>
   <%= hidden_field_tag :sort, params[:sort] %>
 
-  <table>
+<table class="pretty">
     <tr>
       <th><%= sortable "name", "Name" %></th>
       <th><%= sortable "first_name", "Vorname" %></th>
@@ -54,5 +54,6 @@
 
 <br/>
 <%= will_paginate @clients %>
+
 
 
