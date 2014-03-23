@@ -1,13 +1,29 @@
-<h1>Anmeldung Lumia</h1>
-
 <%= form_tag sessions_path do %>
-    <p>
-      <b>Name:</b>
-      <%= text_field_tag :name, params[:name] %>
-    </p>
-    <p>
-      <b>Password:</b>
-      <%= password_field_tag :password %>
-    </p>
-    <p><%= submit_tag "Anmelden" %></p>
+    <table style="border-width: 1px;
+            border-style: solid;
+            border-color: #000000; margin-left:auto;
+            margin-right:auto;" width="400">
+      <tr>
+        <td colspan="2"><h1>Anmeldung Lumia</h1></td>
+      </tr>
+      <tr>
+        <td>
+          <b>Name:</b>
+        </td>
+        <td>
+          <%= text_field_tag :name, params[:name] %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Password:</b></td>
+        <td>
+          <%= password_field_tag :password %>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <%= submit_tag "Anmelden" %></td>
+      </tr>
+    </table>
 <% end %>
