@@ -7,5 +7,7 @@ class CreateUsers < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    User.create name: 'Admin', password: 'Admin', role: 'Administrator'
   end
 end
